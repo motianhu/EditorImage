@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="data">
+        <item>Classic</item>
+        <item>Fan</item>
+        <item>Jump</item>
+        <item>百度地图</item>
+        <item>ElectricFan</item>
+        <item>Fadein</item>
+        <item>Wave</item>
+        <item>Cross Flip</item>
+        <item>Cube</item>
+        <item>Box</item>
+        <item>Flip</item>
+        <item>Lean</item>
+        <item>Upright</item>
+        <item>Press</item>
+        <item>Cylinder</item>
+        <item>Window</item>
+        <item>爱奇艺视频</item>
+        <item>91</item>
+        <item>爱奇艺PPS</item>
+        <item>Shutter</item>
+        <item>Tornado</item>
+        <item>A Keyboard Settings</item>
+        <item>Adobe Reader</item>
+        <item>Ball</item>
+        <item>Binaries</item>
+        <item>Melt</item>
+        <item>Roll</item>
+        <item>Rotate</item>
+        <item>Wheel</item>
+        <item>Erase</item>
+        <item>Wind</item>
+        <item>Hump</item>
+        <item>Cross</item>
+        <item>Ceraunite</item>
+        <item>Snake</item>
+        <item>奥特曼大战小怪兽</item>
+        <item>AppMgr Pro III</item>
+        <item>百度</item>
+        <item>百度视频</item>
+        <item>车轮考驾照</item>
+    </string-array>
+
+</resources>

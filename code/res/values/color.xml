@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="left_frame_divide">#312f3c</color>
+    <color name="background_color">#121216</color>
+    <color name="left_frame_background_color">#191724</color>
+    <color name="left_frame_text_color">#cdcdcf</color>
+    <color name="left_frame_text_small_color">#cdcdff</color>
+    <color name="main_frame_header_background_color">#080719</color>
+    <color name="main_frame_emotion_content_line">#2f2e40</color>
+    <color name="main_frame_emotion_text_color_unselect">#a2a2a2</color>
+    <color name="main_frame_emotion_text_color_select">#fdfeff</color>
+    <color name="color_emotion_page_item_text">#dcdadb</color>
+    <color name="transport">#00000000</color>
+    <color name="transport_half">#e0000000</color>
+    <color name="slider_transport">#66000000</color>
+    <color name="feedback_title_bg_color">#080719</color>
+    <color name="feedback_content_bg_color">#121216</color>
+    <color name="color_category_filter_item_default">#191724</color>
+    <color name="color_category_filter_item_gap">#302f3a</color>
+    <color name="color_category_filter_item_selected">#201e2e</color>
+    <color name="color_crop_header">#080719</color>
+    <color name="color_crop_between">#d7d7d8</color>
+    <color name="color_font_type">#d0d0d3</color>
+    <color name="feedback_edittext_color_hint">#626164</color>
+    <color name="feedback_edittext_color">#dcdadb</color>
+    <color name="feedback_submit_text_color">#dcdadb</color>
+    <color name="feedback_question_text_color">#202030</color>
+    <color name="feedback_answer_text_color">#626164</color>
+
+</resources>

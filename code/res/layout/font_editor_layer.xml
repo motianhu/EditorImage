@@ -1,0 +1,25 @@
+<com.smona.app.editorimage.FontEditorLayer xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@null" >
+
+    <com.smona.app.editorimage.FontTextView
+        android:id="@+id/font"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/font_editor_font_margin_right"
+        android:layout_marginTop="@dimen/font_editor_font_margin_top"
+        android:background="@drawable/bg_border_stroke"
+        android:padding="@dimen/font_editor_font_padding"
+        android:text="@string/app_name" />
+
+    <View
+        android:id="@+id/del"
+        android:layout_width="@dimen/font_del_size"
+        android:layout_height="@dimen/font_del_size"
+        android:layout_gravity="top|right"
+        android:background="@drawable/word_delete"
+        android:visibility="gone" />
+
+</com.smona.app.editorimage.FontEditorLayer>

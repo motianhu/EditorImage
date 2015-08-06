@@ -1,0 +1,409 @@
+package com.smona.app.editorimage;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
+import android.os.Vibrator;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView.OnEditorActionListener;
+
+@SuppressLint("ClickableViewAccessibility")
+public class ImageEditorLayer extends FrameLayout implements OnClickListener {
+    private static final String TAG = "ImageEditorLayer";
+    private static final int screen_base_dp = 640;
+
+    private OnLongClickListener mOnLongListener;
+    private boolean mAnimatorFinish = false;
+
+    private Vibrator mVibrator;
+    private boolean mIsDragging = false;
+    private DragView mDragView;
+    private View mFontView;
+    private AssetManager mAssetManager;
+
+    public ImageEditorLayer(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        mAssetManager = context.getAssets();
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        mVibrator = (Vibrator) getContext().getSystemService(
+                Context.VIBRATOR_SERVICE);
+    }
+
+    private float[] mDownLoc = new float[2];
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        int action = ev.getAction();
+        switch (action) {
+        case MotionEvent.ACTION_DOWN:
+            processDown(ev);
+            break;
+        case MotionEvent.ACTION_MOVE:
+            processMove(ev);
+            break;
+        case MotionEvent.ACTION_UP:
+        case MotionEvent.ACTION_CANCEL:
+            processUp(ev);
+            if (isMove(ev)) {
+                return true;
+            }
+        }
+        return super.onInterceptTouchEvent(ev);
+    }
+
+    private boolean isMove(MotionEvent ev) {
+        float x = ev.getX();
+        float y = ev.getY();
+        float deltaX = mDownLoc[0] - x;
+        float deltaY = mDownLoc[1] - y;
+        if (Math.abs(deltaX) > 20 || Math.abs(deltaY) > 20) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void processDown(MotionEvent ev) {
+        mDownLoc[0] = ev.getX();
+        mDownLoc[1] = ev.getY();
+    }
+
+    private void processMove(MotionEvent ev) {
+        if (!mIsDragging) {
+            return;
+        }
+        float x = ev.getX();
+        float y = ev.getY();
+        mDragView.move(x, y);
+    }
+
+    private void processUp(MotionEvent ev) {
+        stopDrag();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        int action = ev.getAction();
+        switch (action) {
+        case MotionEvent.ACTION_DOWN:
+            processDown(ev);
+            break;
+        case MotionEvent.ACTION_MOVE:
+            processMove(ev);
+            break;
+        case MotionEvent.ACTION_UP:
+        case MotionEvent.ACTION_CANCEL:
+            processUp(ev);
+            if (isMove(ev)) {
+                return true;
+            }
+            break;
+        }
+        return super.onTouchEvent(ev);
+    }
+
+    @SuppressLint("InflateParams")
+    public void addFontTextView(FontInfo info) {
+        FontEditorLayer view = (FontEditorLayer) LayoutInflater.from(
+                getContext()).inflate(R.layout.font_editor_layer, null);
+        view.setOnLongClickListener(mOnLongListener);
+        view.setOnClickListener(this);
+
+        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT);
+        String[] coors = info.coord.split(",");
+        WallpaperLog.d(TAG, "");
+        params.leftMargin = (int)(Float.valueOf(coors[0]) * EditorUtil.getSceenInfo().mScreenScale);
+        params.topMargin = (int)(Float.valueOf(coors[1]) * EditorUtil.getSceenInfo().mScreenScale);
+        view.init(mAssetManager, info);
+        view.setTag(info);
+        addView(view, params);
+    }
+
+    public void startDrag(View v) {
+        if (mIsDragging) {
+            return;
+        }
+        mIsDragging = true;
+        beginVibrator();
+        beginDrag(v);
+    }
+
+    public void processFontLayer(boolean isLong) {
+        if (mFontView == null) {
+            return;
+        }
+        ((FontEditorLayer) mFontView).onLongClick(isLong);
+        if (!isLong) {
+            mFontView = null;
+        }
+    }
+
+    private void beginVibrator() {
+        if (mVibrator != null) {
+            mVibrator.vibrate(WallpaperUtil.VIBRATE_DURATION);
+        }
+    }
+
+    public void onCreate(OnLongClickListener onLongListener) {
+        mOnLongListener = onLongListener;
+    }
+
+    public void onResume() {
+        animFontLayer();
+    }
+
+    private void animFontLayer() {
+        int size = getChildCount();
+        View view = null;
+        AnimatorSet animSet = WallpaperAnimUtils.createAnimatorSet();
+        animSet.setDuration(1000);
+        for (int i = 0; i < size; i++) {
+            view = getChildAt(i);
+            if (view instanceof FontEditorLayer) {
+                Animator anim = createAnimator((FontEditorLayer) view);
+                animSet.play(anim);
+            }
+        }
+        animSet.start();
+    }
+
+    private Animator createAnimator(final FontEditorLayer view) {
+        return view.createAnim();
+
+    }
+
+    public void onPause() {
+        stopDrag();
+    }
+
+    private void stopDrag() {
+        if (!mIsDragging) {
+            return;
+        }
+        dragComplete();
+        mIsDragging = false;
+        removeView(mDragView);
+        mDragView = null;
+    }
+
+    private void dragComplete() {
+        LayoutParams params = (LayoutParams) mFontView.getLayoutParams();
+        params.leftMargin += mDragView.getTranslationX();
+        params.topMargin += mDragView.getTranslationY();
+        removeView(mFontView);
+        addView(mFontView, params);
+        mFontView.setVisibility(VISIBLE);
+        requestLayout();
+    }
+
+    private void beginDrag(View v) {
+        Context context = getContext();
+        float registionX = mDownLoc[0];
+        float registionY = mDownLoc[1];
+        mDragView = new DragView(context, registionX, registionY);
+        LayoutParams dragParams = mDragView.createParams(v);
+        addView(mDragView, dragParams);
+        mFontView = v;
+        v.setVisibility(INVISIBLE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        WallpaperLog.d(TAG, "v: " + v);
+        if (v instanceof FontEditorLayer) {
+            showModifyDialog((FontEditorLayer) v);
+        }
+    }
+
+    private AlertDialog mDialog;
+
+    @SuppressLint("InflateParams")
+    private void showModifyDialog(final FontEditorLayer text) {
+        cancelDialog();
+
+        text.onClick(true);
+        final FontInfo info = (FontInfo) text.getTag();
+
+        Context context = getContext();
+        mDialog = new AlertDialog.Builder(context, R.style.DialogStyle)
+                .create();
+        mDialog.show();
+
+        InputTextLayer layout = (InputTextLayer) LayoutInflater.from(context)
+                .inflate(R.layout.input_layer, null);
+        layout.inits(info.name);
+
+        final EditText edit = (EditText) layout
+                .findViewById(R.id.input_content);
+        final FontFamilySelector fontList = (FontFamilySelector) layout
+                .findViewById(R.id.horizonized);
+
+        final TextView fontSizeView = (TextView) layout
+                .findViewById(R.id.fontSizeText);
+        fontSizeView.setText(info.fontSize + "");
+
+        final EditText fontColor = (EditText) layout
+                .findViewById(R.id.fontColor);
+        fontColor.setText(info.color);
+
+        final SeekBar seekBar = (SeekBar) layout.findViewById(R.id.fontSize);
+        seekBar.setProgress(info.fontSize);
+        seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                    boolean fromUser) {
+                WallpaperLog.d("onProgressChanged", "progress: " + progress);
+                text.setFontSize(progress);
+                fontSizeView.setText(progress + "");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+
+        });
+
+        WallpaperLog.d(TAG, "showModifyDialog info: " + info);
+
+        View finish = (View) layout.findViewById(R.id.input_finish);
+        finish.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String color = fontColor.getText().toString();
+                if (!isColorValue(color)) {
+                    Toast.makeText(getContext(), "颜色值不符合要求", Toast.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+                text.setTextColor(color);
+
+                String fontFamily = fontList.getSelectedFont();
+                text.setTypeface(Typeface.createFromAsset(mAssetManager,
+                        fontFamily));
+
+                String content = edit.getText().toString();
+                text.setText(content);
+                info.fontSize = seekBar.getProgress();
+
+                text.setFontSize(info.fontSize);
+
+                info.name = fontFamily;
+                info.content = content;
+                info.color = color;
+                mDialog.dismiss();
+            }
+        });
+
+        mDialog.setOnDismissListener(new OnDismissListener() {
+
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                text.onClick(false);
+            }
+
+        });
+
+        edit.setText(text.getText());
+        edit.setOnEditorActionListener(new OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                    KeyEvent event) {
+                return (event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
+            }
+        });
+        edit.requestFocus();
+
+        Window window = mDialog.getWindow();
+        window.setContentView(layout);
+        android.view.WindowManager.LayoutParams windowParams = window
+                .getAttributes();
+        window.setGravity(Gravity.BOTTOM);
+        windowParams.width = EditorUtil.getSceenInfo().mScreenWidth;
+        windowParams.x = 0;
+        window.setAttributes(windowParams);
+        mDialog.getWindow().clearFlags(
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                        | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+//        mDialog.getWindow().setSoftInputMode(
+//                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+//        InputMethodManager inManager = (InputMethodManager) edit.getContext()
+//                .getSystemService(Context.INPUT_METHOD_SERVICE);
+//        inManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    private void cancelDialog() {
+        if (mDialog != null) {
+            mDialog.dismiss();
+            mDialog = null;
+        }
+    }
+
+    public ArrayList<FontInfo> acquisitionInfos() {
+        ArrayList<FontInfo> infos = new ArrayList<FontInfo>();
+        int size = getChildCount();
+        View view = null;
+        for (int index = 0; index < size; index++) {
+            view = getChildAt(index);
+            if (view instanceof FontEditorLayer) {
+                FontInfo info = (FontInfo) view.getTag();
+                LayoutParams param = (LayoutParams) view.getLayoutParams();
+                info.coord = param.leftMargin
+                        / EditorUtil.getSceenInfo().mScreenScale + ","
+                        + param.topMargin
+                        / EditorUtil.getSceenInfo().mScreenScale;
+                infos.add(info);
+            }
+        }
+        return infos;
+    }
+
+    public static boolean isColorValue(String mobiles) {
+        Pattern p = Pattern.compile("^#[0-9a-fA-F]{6}$");
+        Matcher m = p.matcher(mobiles);
+        return m.matches();
+    }
+
+    public void loadViews(ArrayList<FontInfo> infos) {
+        int size = infos.size();
+        for (int i = 0; i < size; i++) {
+            addFontTextView(infos.get(i));
+        }
+    }
+}

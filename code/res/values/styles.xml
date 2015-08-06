@@ -1,0 +1,150 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+    </style>
+
+    <style name="Theme.Translucent" parent="android:style/Theme.Translucent">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transport_half</item>
+    </style>
+
+    <style name="Detail_Btn_Container">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_gravity">right</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginRight">@dimen/detail_btn_set_right</item>
+    </style>
+
+    <style name="Detail_Btn_Font">
+        <item name="android:layout_width">@dimen/detail_btn_text_height</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/detail_font_size</item>
+    </style>
+
+    <style name="Detail_Btn_Image">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Upgrade_Btn_Font">
+        <item name="android:textSize">@dimen/update_btn_font_size</item>
+    </style>
+
+    <style name="Upgrade_Btn_Image" parent="@style/Button_style">
+        <item name="android:layout_width">@dimen/update_btn_width</item>
+    </style>
+
+    <style name="Button_style">
+        <item name="android:layout_width">@dimen/btn_width</item>
+        <item name="android:layout_height">@dimen/btn_height</item>
+    </style>
+
+    <style name="Left_Frame_Container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/left_frame_container_height</item>
+    </style>
+
+    <style name="Left_Frame_Text" parent="@style/Left_Frame_Text_Big">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">@dimen/left_frame_text_drawable_padding</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">@dimen/left_frame_text_padding_left</item>
+    </style>
+
+    <style name="Left_Frame_Text_Big">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/left_frame_font_size</item>
+        <item name="android:textColor">@color/left_frame_text_color</item>
+    </style>
+
+    <style name="Left_Frame_Text_Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/left_frame_font_small_size</item>
+    </style>
+
+    <style name="QuestionTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/left_frame_font_size</item>
+    </style>
+
+    <style name="AnswerTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/left_frame_font_small_size</item>
+    </style>
+
+    <style name="Left_Frame_Upgrade">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">@dimen/left_frame_text_drawable_padding</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">@dimen/left_frame_text_padding_left</item>
+    </style>
+
+    <style name="Left_Frame_Progress">
+        <item name="android:layout_width">@dimen/left_frame_progress_size</item>
+        <item name="android:layout_height">@dimen/left_frame_progress_size</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">@dimen/left_frame_progress_padding_right</item>
+    </style>
+
+    <style name="Loading_Progress">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="Left_Frame_Icon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_marginLeft">@dimen/left_frame_text_padding_left</item>
+    </style>
+
+    <style name="Left_Frame_Divide" parent="@style/Frame_Divide">
+        <item name="android:layout_alignParentBottom">true</item>
+    </style>
+
+    <style name="Frame_Divide">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/left_frame_divide</item>
+    </style>
+
+    <style name="TabIndicator">
+        <item name="android:layout_width">@dimen/input_layer_honi_item_width</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="DialogStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground"> @android:color/transparent </item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="CategoryItemStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/category_list_item_margin</item>
+    </style>
+
+</resources>
