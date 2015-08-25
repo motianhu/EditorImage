@@ -19,9 +19,16 @@ public class FontEditorLayer extends FrameLayout implements IChangeText {
 
     private FontTextView mText;
     private View mDelete;
+    
+    private float mParentMoreSize;
+    private float mTextViewMoreSize;
 
     public FontEditorLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mParentMoreSize = getResources().getDimension(
+                R.dimen.font_editor_layer_parentlayout_more_size);
+        mTextViewMoreSize  = getResources().getDimension(
+                R.dimen.font_editor_layer_textview_more_size);
     }
 
     @Override
@@ -39,6 +46,7 @@ public class FontEditorLayer extends FrameLayout implements IChangeText {
 
     public void setTypeface(Typeface tf) {
         mText.setTypeface(tf);
+        reLayout();
     }
 
     private void delSelf() {
@@ -48,6 +56,26 @@ public class FontEditorLayer extends FrameLayout implements IChangeText {
     @Override
     public void setText(String text) {
         mText.setText(text);
+        reLayout();
+    }
+    
+    private void reLayout() {
+        float size = StringUtils.getTextViewLengthWithSeparate(mText, mText
+                .getText().toString(), "\n");
+        mText.setWidth((int) (size + mTextViewMoreSize));
+        LayoutParams params = (LayoutParams) getLayoutParams();
+        params.width = (int) (size + mParentMoreSize);
+        setLayoutParams(params);
+    }
+
+    public void setLines(int lines) {
+        mText.setLines(lines);
+        mText.setMaxLines(lines);
+        if (lines == 1) {
+            mText.setSingleLine(true);
+        } else {
+            mText.setSingleLine(false);
+        }
     }
 
     public void setTextColor(String color) {
@@ -65,8 +93,7 @@ public class FontEditorLayer extends FrameLayout implements IChangeText {
 
     public void init(AssetManager asset, FontInfo info) {
         Typeface typefaceRegular = Typeface.createFromAsset(asset, info.name);
-        mText.setText(info.content);
-        mText.setLines(info.line);
+        setLines(info.line);
         if (!TextUtils.isEmpty(info.color) && !"#".equals(info.color)) {
             mText.setTextColor(Color.parseColor(info.color));
         }

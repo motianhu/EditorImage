@@ -158,6 +158,9 @@ public class PreviewActivity extends Activity implements OnClickListener {
                 mZipFiles.add(filePath);
             }
         }
+        
+        mCurrentZip = mZipFiles.get(0);
+        mCurPos = 0;
     }
 
     private void readZip(String file) {

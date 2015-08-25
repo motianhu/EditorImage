@@ -57,5 +57,6 @@ public class ImageEditorLayer extends FrameLayout {
         view.init(mAssetManager, info);
         view.setTag(info);
         addView(view, params);
+        view.setText(info.content);
     }
 }

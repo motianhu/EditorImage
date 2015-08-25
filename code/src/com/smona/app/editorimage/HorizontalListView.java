@@ -84,6 +84,10 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
             AdapterView.OnItemSelectedListener listener) {
         mOnItemSelected = listener;
     }
+    
+    public int getmLeftViewIndex() {
+        return mLeftViewIndex;
+    }
 
     @Override
     public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {

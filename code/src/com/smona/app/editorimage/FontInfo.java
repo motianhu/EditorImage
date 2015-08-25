@@ -15,10 +15,11 @@ public class FontInfo {
     public String color;
     public int line = 1;
     public String name;
+    public boolean isSelected = false;
 
     public String toString() {
         return "fontId: " + fontId + ", fontSize: " + fontSize + ", rotation: "
                 + rotation + ", coord: " + coord + ", conetnt: " + content
-                + ", color: " + color + ", line: " + line + ", name: " + name;
+                + ", color: " + color + ", line: " + line + ", name: " + name + ", isBatchState: " + isSelected;
     }
 }

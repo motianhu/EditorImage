@@ -12,11 +12,12 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 public class FontFamilySelector extends HorizontalListView {
-
+    private static final String TAG = "FontFamilySelector";
     private String mSelectedFont;
     private TextView mInputContent;
     private FontFamilyAdapter mAdapter;
     private AssetManager mAsset;
+    private FontEditorLayer fontEditorLayer;
 
     public FontFamilySelector(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -27,10 +28,15 @@ public class FontFamilySelector extends HorizontalListView {
     protected void onFinishInflate() {
         super.onFinishInflate();
         setOnItemClickListener(mItemClick);
+        WallpaperLog.d(TAG, "onFinishInflate ");
     }
 
     public String getSelectedFont() {
         return mSelectedFont;
+    }
+
+    public void setShowFontEditorLayer(FontEditorLayer fontEditorLayer) {
+        this.fontEditorLayer = fontEditorLayer;
     }
 
     public void setSelectedFont(TextView content, String name) {
@@ -52,14 +58,17 @@ public class FontFamilySelector extends HorizontalListView {
             int count = parent.getChildCount();
             mSelectedFont = (String) view.getTag();
             mAdapter.setSelectedFont(mSelectedFont);
+            int viewPosition = position - getmLeftViewIndex() - 1;
+            WallpaperLog.d(TAG, "mItemClick onClick  position = " + position + " viewPosition= " + viewPosition);
             for (int index = 0; index < count; index++) {
-                parent.getChildAt(index).setSelected(index == position);
+                parent.getChildAt(index).setSelected(index == viewPosition);
             }
             setTypeface();
         }
     };
 
     private void setTypeface() {
+        WallpaperLog.d(TAG, "setTypeface mSelectedFont： " + mSelectedFont + " mInputContent:" + mInputContent + " fontEditorLayer:" + fontEditorLayer + " mSelectedFont:" + mSelectedFont);
         if (TextUtils.isEmpty(mSelectedFont)) {
             return;
         }
@@ -69,9 +78,13 @@ public class FontFamilySelector extends HorizontalListView {
         }
 
         if (mSelectedFont.endsWith(".ttf") || mSelectedFont.endsWith(".otf")) {
-            mInputContent.setTypeface(Typeface.createFromAsset(mAsset,
-                    mSelectedFont));
+            Typeface typeface = Typeface.createFromAsset(mAsset, mSelectedFont);
+            mInputContent.setTypeface(typeface);
+            if (fontEditorLayer != null) {
+                fontEditorLayer.setTypeface(typeface);
+            }
         }
     }
 
 }
+

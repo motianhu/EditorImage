@@ -40,6 +40,12 @@ public class DetailActivity extends Activity implements OnLongClickListener,
 
     private ImageEditorLayer mEditorLayer;
 
+    enum State {
+        NORMAL, BATCH
+    }
+
+    private State mCurrentState = State.NORMAL;
+
     private ArrayList<String> mImpressionFiles = new ArrayList<String>();
     private ArrayList<String> mSourceFiles = new ArrayList<String>();
     private int mCurPos = 0;
@@ -139,12 +145,19 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         findViewById(R.id.next).setOnClickListener(this);
         findViewById(R.id.previous).setOnClickListener(this);
         findViewById(R.id.preview).setOnClickListener(this);
+        findViewById(R.id.batch).setOnClickListener(this);
 
         // orien
         findViewById(R.id.left).setOnClickListener(this);
         findViewById(R.id.right).setOnClickListener(this);
         findViewById(R.id.top).setOnClickListener(this);
         findViewById(R.id.bottom).setOnClickListener(this);
+
+        // batch
+        findViewById(R.id.recovery).setOnClickListener(this);
+        findViewById(R.id.aligin_left).setOnClickListener(this);
+        findViewById(R.id.aligin_center).setOnClickListener(this);
+        findViewById(R.id.aligin_right).setOnClickListener(this);
 
         initZipMgr();
 
@@ -177,15 +190,20 @@ public class DetailActivity extends Activity implements OnLongClickListener,
             break;
         case R.id.next:
             clickNext();
+            this.alignLeft();
             break;
         case R.id.previous:
             clickPrevios();
+            this.alignRight();
             break;
         case R.id.save:
             clickSave();
             break;
         case R.id.preview:
             clickPreview();
+            break;
+        case R.id.batch:
+            clickBatch(true);
             break;
         case R.id.left:
             clickLeft();
@@ -199,10 +217,23 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         case R.id.bottom:
             clickBottom();
             break;
+        case R.id.recovery:
+            clickBatch(false);
+            break;
+        case R.id.aligin_left:
+            alignLeft();
+            break;
+        case R.id.aligin_center:
+            alignCenter();
+            break;
+        case R.id.aligin_right:
+            alignRight();
+            break;
         }
     }
 
     private static final int STEP = 4;
+
     private void clickLeft() {
         if (mMoveView == null) {
             return;
@@ -252,6 +283,18 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         startActivity(intent);
     }
 
+    private void clickBatch(boolean enterBatch) {
+        mCurrentState = enterBatch ? State.BATCH : State.NORMAL;
+        if (enterBatch) {
+            findViewById(R.id.batch_container).setVisibility(View.VISIBLE);
+            findViewById(R.id.normal).setVisibility(View.GONE);
+        } else {
+            mEditorLayer.resetNormal();
+            findViewById(R.id.normal).setVisibility(View.VISIBLE);
+            findViewById(R.id.batch_container).setVisibility(View.GONE);
+        }
+    }
+
     @SuppressLint("NewApi")
     private void clickNext() {
         int count = mImpressionFiles.size();
@@ -268,6 +311,10 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         setEditorBackground(pos);
 
         mCurPos += 1;
+    }
+
+    public boolean isNormalState() {
+        return State.NORMAL.equals(mCurrentState);
     }
 
     @SuppressLint("NewApi")
@@ -367,7 +414,6 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         OutputFormat of = new OutputFormat();
         of.setEncoding("UTF-8");
         of.setIndent(true);
-        of.setNewlines(true);
         XMLWriter writer = new XMLWriter(osw, of);
         writer.write(document);
         writer.close();
@@ -473,5 +519,17 @@ public class DetailActivity extends Activity implements OnLongClickListener,
 
     private String getXMLDir() {
         return WallpaperUtil.RES_DIR_XML;
+    }
+
+    private void alignLeft() {
+        mEditorLayer.alignLeft();
+    }
+
+    private void alignRight() {
+        mEditorLayer.alignRight();
+    }
+
+    private void alignCenter() {
+        mEditorLayer.alignCenter();
     }
 }

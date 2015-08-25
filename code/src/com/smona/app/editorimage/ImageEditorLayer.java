@@ -14,31 +14,27 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.os.Vibrator;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.TextView.OnEditorActionListener;
 
 @SuppressLint("ClickableViewAccessibility")
 public class ImageEditorLayer extends FrameLayout implements OnClickListener {
     private static final String TAG = "ImageEditorLayer";
-    private static final int screen_base_dp = 640;
-
     private OnLongClickListener mOnLongListener;
-    private boolean mAnimatorFinish = false;
 
     private Vibrator mVibrator;
     private boolean mIsDragging = false;
@@ -46,9 +42,12 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
     private View mFontView;
     private AssetManager mAssetManager;
 
+    private DetailActivity mActivity;
+
     public ImageEditorLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
         mAssetManager = context.getAssets();
+        mActivity = (DetailActivity) context;
     }
 
     @Override
@@ -142,11 +141,14 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
                 LayoutParams.WRAP_CONTENT);
         String[] coors = info.coord.split(",");
         WallpaperLog.d(TAG, "");
-        params.leftMargin = (int)(Float.valueOf(coors[0]) * EditorUtil.getSceenInfo().mScreenScale);
-        params.topMargin = (int)(Float.valueOf(coors[1]) * EditorUtil.getSceenInfo().mScreenScale);
+        params.leftMargin = (int) (Float.valueOf(coors[0]) * EditorUtil
+                .getSceenInfo().mScreenScale);
+        params.topMargin = (int) (Float.valueOf(coors[1]) * EditorUtil
+                .getSceenInfo().mScreenScale);
         view.init(mAssetManager, info);
         view.setTag(info);
         addView(view, params);
+        view.setText(info.content);
     }
 
     public void startDrag(View v) {
@@ -241,7 +243,12 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
     public void onClick(View v) {
         WallpaperLog.d(TAG, "v: " + v);
         if (v instanceof FontEditorLayer) {
-            showModifyDialog((FontEditorLayer) v);
+            if (mActivity.isNormalState()) {
+                showModifyDialog((FontEditorLayer) v);
+            } else {
+                FontInfo info = (FontInfo) v.getTag();
+                info.isSelected = true;
+            }
         }
     }
 
@@ -261,7 +268,7 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
 
         InputTextLayer layout = (InputTextLayer) LayoutInflater.from(context)
                 .inflate(R.layout.input_layer, null);
-        layout.inits(info.name);
+        layout.inits(info.name, text);
 
         final EditText edit = (EditText) layout
                 .findViewById(R.id.input_content);
@@ -341,14 +348,50 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
         });
 
         edit.setText(text.getText());
-        edit.setOnEditorActionListener(new OnEditorActionListener() {
+        // edit.setOnEditorActionListener(new OnEditorActionListener() {
+        //
+        // @Override
+        // public boolean onEditorAction(TextView v, int actionId,
+        // KeyEvent event) {
+        // boolean isEnter = (event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
+        // if(isEnter) {
+        // String content = v.getText() + "\n";
+        // v.setText(content);
+        // }
+        // return isEnter;
+        // }
+        //
+        // });
+        edit.addTextChangedListener(new TextWatcher() {
+
             @Override
-            public boolean onEditorAction(TextView v, int actionId,
-                    KeyEvent event) {
-                return (event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                    int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                    int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String fontFamily = fontList.getSelectedFont();
+                text.setTypeface(Typeface.createFromAsset(mAssetManager,
+                        fontFamily));
+
+                String content = edit.getText().toString();
+                WallpaperLog.d(TAG, "afterTextChanged content = " + content);
+
+                info.line = StringUtils.countStringNumbers(content, "\n") + 1;
+                WallpaperLog.d(TAG, "afterTextChanged info.line = " + info.line
+                        + ", content: " + content);
+                info.name = fontFamily;
+                info.content = content;
+                text.setText(content);
+                text.setLines(info.line);
             }
         });
-        edit.requestFocus();
 
         Window window = mDialog.getWindow();
         window.setContentView(layout);
@@ -361,11 +404,11 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
         mDialog.getWindow().clearFlags(
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-//        mDialog.getWindow().setSoftInputMode(
-//                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-//        InputMethodManager inManager = (InputMethodManager) edit.getContext()
-//                .getSystemService(Context.INPUT_METHOD_SERVICE);
-//        inManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        // mDialog.getWindow().setSoftInputMode(
+        // WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        // InputMethodManager inManager = (InputMethodManager) edit.getContext()
+        // .getSystemService(Context.INPUT_METHOD_SERVICE);
+        // inManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     private void cancelDialog() {
@@ -384,6 +427,11 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
             if (view instanceof FontEditorLayer) {
                 FontInfo info = (FontInfo) view.getTag();
                 LayoutParams param = (LayoutParams) view.getLayoutParams();
+                WallpaperLog.d(
+                        TAG,
+                        "line: "
+                                + (StringUtils.countStringNumbers(info.content,
+                                        "\n") + 1));
                 info.coord = param.leftMargin
                         / EditorUtil.getSceenInfo().mScreenScale + ","
                         + param.topMargin
@@ -404,6 +452,96 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
         int size = infos.size();
         for (int i = 0; i < size; i++) {
             addFontTextView(infos.get(i));
+        }
+    }
+
+    public void alignLeft() {
+        int size = getChildCount();
+        View view = null;
+        int leftMargin = Integer.MAX_VALUE;
+        for (int index = 0; index < size; index++) {
+            view = getChildAt(index);
+            if (view instanceof FontEditorLayer) {
+                FontInfo info = (FontInfo) view.getTag();
+                if (info.isSelected) {
+                    LayoutParams param = (LayoutParams) view.getLayoutParams();
+                    if (leftMargin > param.leftMargin) {
+                        leftMargin = param.leftMargin;
+                    }
+                }
+            }
+        }
+
+        for (int index = 0; index < size; index++) {
+            view = getChildAt(index);
+            if (view instanceof FontEditorLayer) {
+                FontInfo info = (FontInfo) view.getTag();
+                if (info.isSelected) {
+                    LayoutParams param = (LayoutParams) view.getLayoutParams();
+                    param.leftMargin = leftMargin;
+                }
+            }
+        }
+        this.requestLayout();
+    }
+
+    public void alignRight() {
+        int size = getChildCount();
+        View view = null;
+        int rightMargin = Integer.MIN_VALUE;
+        for (int index = 0; index < size; index++) {
+            view = getChildAt(index);
+            if (view instanceof FontEditorLayer) {
+                FontInfo info = (FontInfo) view.getTag();
+                if (info.isSelected) {
+                    LayoutParams param = (LayoutParams) view.getLayoutParams();
+                    if (rightMargin < (param.leftMargin + param.width)) {
+                        rightMargin = (param.leftMargin + param.width);
+                    }
+                }
+            }
+        }
+
+        for (int index = 0; index < size; index++) {
+            view = getChildAt(index);
+            if (view instanceof FontEditorLayer) {
+                FontInfo info = (FontInfo) view.getTag();
+                if (info.isSelected) {
+                    LayoutParams param = (LayoutParams) view.getLayoutParams();
+                    param.leftMargin = rightMargin - param.width;
+                }
+            }
+        }
+        this.requestLayout();
+    }
+
+    public void alignCenter() {
+        int size = getChildCount();
+        View view = null;
+        int scrennCenter = EditorUtil.getSceenInfo().mScreenWidth / 2;
+
+        for (int index = 0; index < size; index++) {
+            view = getChildAt(index);
+            if (view instanceof FontEditorLayer) {
+                FontInfo info = (FontInfo) view.getTag();
+                if (info.isSelected) {
+                    LayoutParams param = (LayoutParams) view.getLayoutParams();
+                    param.leftMargin = scrennCenter - param.width / 2;
+                }
+            }
+        }
+        this.requestLayout();
+    }
+
+    public void resetNormal() {
+        int size = getChildCount();
+        View view = null;
+        for (int index = 0; index < size; index++) {
+            view = getChildAt(index);
+            if (view instanceof FontEditorLayer) {
+                FontInfo info = (FontInfo) view.getTag();
+                info.isSelected = false;
+            }
         }
     }
 }

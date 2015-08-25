@@ -8,10 +8,8 @@
         android:id="@+id/font"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/font_editor_font_margin_right"
         android:layout_marginTop="@dimen/font_editor_font_margin_top"
         android:background="@drawable/bg_border_stroke"
-        android:padding="@dimen/font_editor_font_padding"
         android:text="@string/app_name" />
 
     <View
