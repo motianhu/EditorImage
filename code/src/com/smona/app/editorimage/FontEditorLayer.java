@@ -59,6 +59,10 @@ public class FontEditorLayer extends FrameLayout implements IChangeText {
         reLayout();
     }
     
+    public void setTextBgColor(int colorId) {
+        mText.setBackgroundResource(colorId);
+    }
+    
     private void reLayout() {
         float size = StringUtils.getTextViewLengthWithSeparate(mText, mText
                 .getText().toString(), "\n");

@@ -247,7 +247,15 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
                 showModifyDialog((FontEditorLayer) v);
             } else {
                 FontInfo info = (FontInfo) v.getTag();
-                info.isSelected = true;
+                if (info.isSelected) {
+                    info.isSelected = false;
+                    ((FontEditorLayer) v)
+                            .setTextBgColor(R.drawable.bg_border_stroke);
+                } else {
+                    info.isSelected = true;
+                    ((FontEditorLayer) v)
+                            .setTextBgColor(R.drawable.bg_border_stroke_batch);
+                }
             }
         }
     }
@@ -541,6 +549,8 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
             if (view instanceof FontEditorLayer) {
                 FontInfo info = (FontInfo) view.getTag();
                 info.isSelected = false;
+                ((FontEditorLayer) view)
+                        .setTextBgColor(R.drawable.bg_border_stroke);
             }
         }
     }

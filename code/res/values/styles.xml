@@ -1,7 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
-    </style>
+    <style name="AppTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen"></style>
 
     <style name="Theme.Translucent" parent="android:style/Theme.Translucent">
         <item name="android:windowFullscreen">true</item>
@@ -145,6 +144,18 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/category_list_item_margin</item>
+    </style>
+
+    <style name="detail_btn">
+        <item name="android:layout_width">@dimen/detail_back_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/emotion_element_line_margin_left</item>
+        <item name="android:gravity">center</item>
+        <item name="android:shadowColor">#4d4d4d</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">-3</item>
+        <item name="android:shadowRadius">3</item>
     </style>
 
 </resources>

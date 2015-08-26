@@ -26,98 +26,70 @@
 
             <TextView
                 android:id="@+id/add"
-                android:layout_width="@dimen/detail_back_width"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
+                style="@style/detail_btn"
                 android:drawableTop="@drawable/add"
-                android:gravity="center"
                 android:text="添文字" />
 
             <TextView
                 android:id="@+id/previous"
-                android:layout_width="@dimen/detail_back_width"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
+                style="@style/detail_btn"
                 android:drawableTop="@drawable/return_pressed"
-                android:gravity="center"
                 android:text="上一张" />
 
             <TextView
                 android:id="@+id/next"
-                android:layout_width="@dimen/detail_back_width"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
+                style="@style/detail_btn"
                 android:drawableTop="@drawable/next"
-                android:gravity="center"
                 android:text="下一张" />
 
             <TextView
                 android:id="@+id/save"
-                android:layout_width="@dimen/detail_back_width"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
+                style="@style/detail_btn"
                 android:drawableTop="@drawable/save_pressed"
-                android:gravity="center"
                 android:text="保存" />
 
             <TextView
                 android:id="@+id/preview"
-                android:layout_width="@dimen/detail_back_width"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
+                style="@style/detail_btn"
                 android:drawableTop="@drawable/preview_pressed"
-                android:gravity="center"
                 android:text="预览" />
 
             <TextView
                 android:id="@+id/batch"
-                android:layout_width="@dimen/detail_back_width"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
+                style="@style/detail_btn"
                 android:drawableTop="@drawable/preview_pressed"
-                android:gravity="center"
                 android:text="批量" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/batch_container"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-                 <TextView
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <TextView
                 android:id="@+id/recovery"
-                android:layout_width="@dimen/detail_back_width"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
+                style="@style/detail_btn"
                 android:drawableTop="@drawable/preview_pressed"
-                android:gravity="center"
                 android:text="返回" />
-              <TextView
+
+            <TextView
                 android:id="@+id/aligin_left"
-                android:layout_width="@dimen/detail_back_width"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
+                style="@style/detail_btn"
                 android:drawableTop="@drawable/save_pressed"
-                android:gravity="center"
                 android:text="左对齐" />
 
             <TextView
                 android:id="@+id/aligin_center"
-                android:layout_width="@dimen/detail_back_width"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
+                style="@style/detail_btn"
                 android:drawableTop="@drawable/preview_pressed"
-                android:gravity="center"
                 android:text="居中" />
 
             <TextView
                 android:id="@+id/aligin_right"
-                android:layout_width="@dimen/detail_back_width"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
+                style="@style/detail_btn"
                 android:drawableTop="@drawable/preview_pressed"
-                android:gravity="center"
                 android:text="右对齐" />
         </LinearLayout>
     </LinearLayout>
