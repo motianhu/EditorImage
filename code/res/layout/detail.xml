@@ -57,7 +57,7 @@
             <TextView
                 android:id="@+id/batch"
                 style="@style/detail_btn"
-                android:drawableTop="@drawable/preview_pressed"
+                android:drawableTop="@drawable/batch"
                 android:text="批量" />
         </LinearLayout>
 
@@ -71,25 +71,25 @@
             <TextView
                 android:id="@+id/recovery"
                 style="@style/detail_btn"
-                android:drawableTop="@drawable/preview_pressed"
+                android:drawableTop="@drawable/batch_align_return"
                 android:text="返回" />
 
             <TextView
                 android:id="@+id/aligin_left"
                 style="@style/detail_btn"
-                android:drawableTop="@drawable/save_pressed"
+                android:drawableTop="@drawable/batch_align_left"
                 android:text="左对齐" />
 
             <TextView
                 android:id="@+id/aligin_center"
                 style="@style/detail_btn"
-                android:drawableTop="@drawable/preview_pressed"
+                android:drawableTop="@drawable/batch_align_center"
                 android:text="居中" />
 
             <TextView
                 android:id="@+id/aligin_right"
                 style="@style/detail_btn"
-                android:drawableTop="@drawable/preview_pressed"
+                android:drawableTop="@drawable/batch_align_right"
                 android:text="右对齐" />
         </LinearLayout>
     </LinearLayout>

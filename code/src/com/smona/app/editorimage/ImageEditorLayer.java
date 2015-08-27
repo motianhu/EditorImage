@@ -300,6 +300,7 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
                     boolean fromUser) {
                 WallpaperLog.d("onProgressChanged", "progress: " + progress);
                 text.setFontSize(progress);
+                info.fontSize = progress;
                 fontSizeView.setText(progress + "");
             }
 
@@ -335,9 +336,7 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
 
                 String content = edit.getText().toString();
                 text.setText(content);
-                info.fontSize = seekBar.getProgress();
-
-                text.setFontSize(info.fontSize);
+                info.fontSize = (int)text.getFontSize();
 
                 info.name = fontFamily;
                 info.content = content;

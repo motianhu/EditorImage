@@ -158,7 +158,11 @@ public class PreviewActivity extends Activity implements OnClickListener {
                 mZipFiles.add(filePath);
             }
         }
-        
+
+        if (mZipFiles.size() <= 0) {
+            return;
+        }
+
         mCurrentZip = mZipFiles.get(0);
         mCurPos = 0;
     }
@@ -332,7 +336,7 @@ public class PreviewActivity extends Activity implements OnClickListener {
             Toast.makeText(this, "已经是第一张了", Toast.LENGTH_SHORT).show();
             return;
         }
-        
+
         mCurrentZip = mZipFiles.get(pos);
         mFileName.setText(mCurrentZip);
         setEditorBg();
