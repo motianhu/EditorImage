@@ -322,7 +322,7 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
         finish.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                String color = fontColor.getText().toString();
+                String color = fontColor.getText().toString().replace(" ", "");
                 if (!isColorValue(color)) {
                     Toast.makeText(getContext(), "颜色值不符合要求", Toast.LENGTH_SHORT)
                             .show();
@@ -348,7 +348,7 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 text.onClick(false);
-                String color = fontColor.getText().toString();
+                String color = fontColor.getText().toString().replace(" ", "");
                 if (!isColorValue(color)) {
                     Toast.makeText(getContext(), "颜色值不符合要求", Toast.LENGTH_SHORT)
                             .show();
