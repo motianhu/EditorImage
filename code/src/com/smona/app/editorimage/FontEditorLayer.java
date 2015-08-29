@@ -94,7 +94,6 @@ public class FontEditorLayer extends FrameLayout implements IChangeText {
     public float getFontSize() {
         return mText.getTextSize();
     }
-    
 
     @Override
     public String getText() {

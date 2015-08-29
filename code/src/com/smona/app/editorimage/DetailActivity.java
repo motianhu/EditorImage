@@ -367,7 +367,7 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         info.content = "";
         info.coord = "58,170";
         info.line = 1;
-        info.color = "#ffffff";
+        info.color = "#";
         info.fontSize = 36;
         info.name = "DroidSansFallback.ttf";
         mEditorLayer.addFontTextView(info);

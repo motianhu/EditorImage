@@ -336,8 +336,6 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
 
                 String content = edit.getText().toString();
                 text.setText(content);
-                info.fontSize = (int)text.getFontSize();
-
                 info.name = fontFamily;
                 info.content = content;
                 info.color = color;
@@ -350,6 +348,12 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 text.onClick(false);
+                String color = fontColor.getText().toString();
+                if (!isColorValue(color)) {
+                    Toast.makeText(getContext(), "颜色值不符合要求", Toast.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
             }
 
         });
@@ -395,6 +399,7 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
                         + ", content: " + content);
                 info.name = fontFamily;
                 info.content = content;
+                
                 text.setText(content);
                 text.setLines(info.line);
             }
