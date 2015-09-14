@@ -187,6 +187,7 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         findViewById(R.id.aligin_left).setOnClickListener(this);
         findViewById(R.id.aligin_center).setOnClickListener(this);
         findViewById(R.id.aligin_right).setOnClickListener(this);
+        findViewById(R.id.reset_last).setOnClickListener(this);
 
         initZipMgr();
 
@@ -257,6 +258,9 @@ public class DetailActivity extends Activity implements OnLongClickListener,
             break;
         case R.id.aligin_right:
             alignRight();
+            break;
+        case R.id.reset_last:
+            resetLastOp();
             break;
         }
     }
@@ -340,6 +344,11 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         setEditorBackground(pos);
 
         mCurPos += 1;
+    }
+    
+    
+    private void resetLastOp() {
+        mEditorLayer.resetLastOp();
     }
 
     public boolean isNormalState() {

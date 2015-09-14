@@ -49,10 +49,10 @@
                 android:text="保存" />
 
             <TextView
-                android:id="@+id/preview"
+                android:id="@+id/reset_last"
                 style="@style/detail_btn"
-                android:drawableTop="@drawable/preview_pressed"
-                android:text="预览" />
+                android:drawableTop="@drawable/batch_align_right"
+                android:text="恢复" />
 
             <TextView
                 android:id="@+id/batch"
@@ -91,6 +91,12 @@
                 style="@style/detail_btn"
                 android:drawableTop="@drawable/batch_align_right"
                 android:text="右对齐" />
+
+            <TextView
+                android:id="@+id/preview"
+                style="@style/detail_btn"
+                android:drawableTop="@drawable/preview_pressed"
+                android:text="预览" />
         </LinearLayout>
     </LinearLayout>
 

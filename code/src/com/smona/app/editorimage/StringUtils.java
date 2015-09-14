@@ -313,8 +313,6 @@ public class StringUtils {
      * @return
      */
     public static int countStringNumbers(String srcStr, String findStr) {
-        WallpaperLog.d(TAG, "countStringNumbers srcStr = " + srcStr
-                + "findStr = " + findStr);
         int counter = 0;
         if (srcStr.indexOf(findStr) == -1) {
             counter = 0;
@@ -325,7 +323,6 @@ public class StringUtils {
                             srcStr.substring(srcStr.indexOf(findStr)
                                     + findStr.length()), findStr);
         }
-        WallpaperLog.d(TAG, "countStringNumbers counter = " + counter);
         return counter;
     }
 
@@ -339,8 +336,6 @@ public class StringUtils {
     public static float getTextViewLengthWithSeparate(TextView textView,String srcStr,
             String seprateStr) {
         String[] strArray = srcStr.split(seprateStr);
-        WallpaperLog.d(TAG, "getTextViewLength strArray.length = "
-                + strArray.length);
         Paint paint = new Paint();
         paint.setTextSize(textView.getTextSize());
         paint.setTypeface(textView.getTypeface());
@@ -351,13 +346,10 @@ public class StringUtils {
         }
         for (int i = 0; i < strArray.length; i++) {
             float localSize = paint.measureText(strArray[i]);
-            WallpaperLog.d(TAG, "getTextViewLength strArray[" + i + "] = "
-                    + strArray[i]);
             if (size < localSize) {
                 size = localSize;
             }
         }
-        WallpaperLog.d(TAG, "getTextViewLength size = " + size);
         return size;
     }
 }

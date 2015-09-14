@@ -42,6 +42,8 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
     private View mFontView;
     private AssetManager mAssetManager;
 
+    private LastOpInfo mLastInfo = new LastOpInfo();
+
     private DetailActivity mActivity;
 
     public ImageEditorLayer(Context context, AttributeSet attrs) {
@@ -234,6 +236,10 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
         float registionY = mDownLoc[1];
         mDragView = new DragView(context, registionX, registionY);
         LayoutParams dragParams = mDragView.createParams(v);
+
+        mLastInfo.saveLastPos(dragParams.leftMargin, dragParams.topMargin,
+                (FontEditorLayer) v);
+
         addView(mDragView, dragParams);
         mFontView = v;
         v.setVisibility(INVISIBLE);
@@ -298,7 +304,6 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                     boolean fromUser) {
-                WallpaperLog.d("onProgressChanged", "progress: " + progress);
                 text.setFontSize(progress);
                 info.fontSize = progress;
                 fontSizeView.setText(progress + "");
@@ -306,12 +311,13 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                WallpaperLog.d("onStartTrackingTouch", "progress: " + seekBar.getProgress());
+                mLastInfo.saveLastFontSize(seekBar.getProgress(), text);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                WallpaperLog.d("onStopTrackingTouch", "progress: ");
             }
 
         });
@@ -328,6 +334,7 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
                             .show();
                     return;
                 }
+                
                 text.setTextColor(color);
 
                 String fontFamily = fontList.getSelectedFont();
@@ -399,7 +406,7 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
                         + ", content: " + content);
                 info.name = fontFamily;
                 info.content = content;
-                
+
                 text.setText(content);
                 text.setLines(info.line);
             }
@@ -459,8 +466,13 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
         Matcher m = p.matcher(mobiles);
         return m.matches();
     }
+    
+    public void resetLastOp() {
+        mLastInfo.resetFeature();
+    }
 
     public void loadViews(ArrayList<FontInfo> infos) {
+        mLastInfo.resetAll();
         int size = infos.size();
         for (int i = 0; i < size; i++) {
             addFontTextView(infos.get(i));
