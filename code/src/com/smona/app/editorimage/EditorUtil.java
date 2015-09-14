@@ -37,7 +37,7 @@ public class EditorUtil {
             if (mScreenHeight < 960) {
                 mScreenScale = mScreenHeight * 1.0f / 640;
             }
-            WallpaperLog.d("", "ScreenInfo mScreenWidth: " + mScreenWidth
+            WallpaperLog.d("ScreenInfo", " mScreenWidth: " + mScreenWidth
                     + ", mScreenHeight: " + mScreenHeight + ", mDpi: "
                     + mScreenDpi + ", mScreenScale: " + mScreenScale);
         }

@@ -47,7 +47,7 @@ public class DetailActivity extends Activity implements OnLongClickListener,
     private State mCurrentState = State.NORMAL;
 
     private ArrayList<String> mImpressionFiles = new ArrayList<String>();
-    private ArrayList<String> mSourceFiles = new ArrayList<String>();
+
     private int mCurPos = 0;
     private ZipManager mZipMgr;
 
@@ -78,12 +78,21 @@ public class DetailActivity extends Activity implements OnLongClickListener,
     }
 
     private void initFiles() {
+        ArrayList<String> zipFiles = new ArrayList<String>();
+        initFiles(getZipDir(), zipFiles, ".zip");
         initFiles(getImpressDir(), mImpressionFiles);
-        initFiles(getSourceDir(), mSourceFiles);
-        diff(mSourceFiles, mImpressionFiles);
+        sortFiles(mImpressionFiles, zipFiles);
+
+        ArrayList<String> sourceFiles = new ArrayList<String>();
+        initFiles(getSourceDir(), sourceFiles);
+        diff(sourceFiles, mImpressionFiles);
     }
 
     private void initFiles(String path, ArrayList<String> list) {
+        initFiles(path, list, ".jpg");
+    }
+
+    private void initFiles(String path, ArrayList<String> list, String suffix) {
         File root = new File(path);
         File[] files = root.listFiles();
         if (files == null) {
@@ -91,9 +100,29 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         }
         String rename;
         for (File filePath : files) {
-            if (filePath.getName().endsWith(".jpg")) {
+            if (filePath.getName().endsWith(suffix)) {
                 rename = rename(path, filePath.getName());
                 list.add(rename);
+            }
+        }
+    }
+
+    private void sortFiles(ArrayList<String> impress, ArrayList<String> sortList) {
+        int iCount = impress.size();
+        int sCount = sortList.size();
+        String impPath;
+        String zipPath;
+        for (int i = iCount - 1; i >= 0; i--) {
+            impPath = impress.get(i);
+            for (int j = 0; j < sCount; j++) {
+                zipPath = sortList.get(j);
+                boolean pipei = impPath.substring(0, impPath.length() - 4)
+                        .equalsIgnoreCase(
+                                zipPath.substring(0, zipPath.length() - 4));
+                if (pipei) {
+                    impress.add(impress.remove(i));
+                    break;
+                }
             }
         }
     }
@@ -364,10 +393,10 @@ public class DetailActivity extends Activity implements OnLongClickListener,
     private void clickAdd() {
         Toast.makeText(this, "Add Text", Toast.LENGTH_SHORT).show();
         FontInfo info = new FontInfo();
-        info.content = "";
-        info.coord = "58,170";
+        info.content = " ";
+        info.coord = "28,170";
         info.line = 1;
-        info.color = "#";
+        info.color = "#ffffff";
         info.fontSize = 36;
         info.name = "DroidSansFallback.ttf";
         mEditorLayer.addFontTextView(info);
