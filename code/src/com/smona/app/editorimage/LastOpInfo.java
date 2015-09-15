@@ -24,7 +24,6 @@ public class LastOpInfo {
         pos[0] = left;
         pos[1] = top;
         focusView = opView;
-        opView.requestLayout();
     }
 
     private void resetLastPos() {
@@ -34,6 +33,7 @@ public class LastOpInfo {
         LayoutParams params = (LayoutParams) focusView.getLayoutParams();
         params.leftMargin = pos[0];
         params.topMargin = pos[1];
+        focusView.requestLayout();
     }
 
     public void saveLastColor(String color, FontEditorLayer opView) {
@@ -59,6 +59,8 @@ public class LastOpInfo {
             return;
         }
         focusView.setFontSize(fontSize);
+        FontInfo info = (FontInfo) focusView.getTag();
+        info.fontSize = fontSize;
     }
 
     public void saveLastFontStyle(String fontStyle, FontEditorLayer opView) {
@@ -72,7 +74,7 @@ public class LastOpInfo {
             return;
         }
     }
-    
+
     public void resetFeature() {
         WallpaperLog.d("LastOpInfo", "resetFeature mState=" + mState);
         resetLastPos();
