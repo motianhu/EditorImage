@@ -48,11 +48,12 @@
                 android:drawableTop="@drawable/save_pressed"
                 android:text="保存" />
 
+     
             <TextView
-                android:id="@+id/reset_last"
+                android:id="@+id/preview"
                 style="@style/detail_btn"
-                android:drawableTop="@drawable/batch_align_right"
-                android:text="恢复" />
+                android:drawableTop="@drawable/preview_pressed"
+                android:text="预览" />
 
             <TextView
                 android:id="@+id/batch"
@@ -93,10 +94,10 @@
                 android:text="右对齐" />
 
             <TextView
-                android:id="@+id/preview"
+                android:id="@+id/reset_last"
                 style="@style/detail_btn"
-                android:drawableTop="@drawable/preview_pressed"
-                android:text="预览" />
+                android:drawableTop="@drawable/batch_align_right"
+                android:text="恢复" />
         </LinearLayout>
     </LinearLayout>
 
