@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
+    <dimen name="starndard_density">1dp</dimen>
     <dimen name="left_offset">100dp</dimen>
     <dimen name="title_font_size">16sp</dimen>
     <dimen name="shadow_width">15dp</dimen>

@@ -33,7 +33,9 @@ public class EditorUtil {
             mScreenWidth = display.widthPixels;
             mScreenHeight = display.heightPixels;
             mScreenDpi = display.densityDpi;
-            mScreenScale = display.scaledDensity;
+            mScreenScale = context.getResources().getDimensionPixelSize(
+                    R.dimen.starndard_density);
+
             if (mScreenHeight < 960) {
                 mScreenScale = mScreenHeight * 1.0f / 640;
             }

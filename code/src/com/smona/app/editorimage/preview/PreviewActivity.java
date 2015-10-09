@@ -79,7 +79,7 @@ public class PreviewActivity extends Activity implements OnClickListener {
         if (TextUtils.isEmpty(mCurrentZip)) {
             return;
         }
-
+        
         mFileName = (TextView) findViewById(R.id.file_name);
         mFileName.setText(mCurrentZip);
         findViewById(R.id.previous).setOnClickListener(this);
@@ -89,11 +89,11 @@ public class PreviewActivity extends Activity implements OnClickListener {
     }
 
     private void setEditorBg() {
-        float scale = EditorUtil.getSceenInfo().mScreenScale;
-        WallpaperLog.d(TAG, "scale: " + scale);
+        float width = EditorUtil.getSceenInfo().mScreenWidth;
+        WallpaperLog.d(TAG, "scale: " + width + ", month_day_text_padding: " + this.getResources().getDimensionPixelSize(R.dimen.month_day_text_padding));
         int index = 0;
-        for (; index < scales.length; index++) {
-            if (Math.abs((scales[index] - scale)) <= 0.0009) {
+        for (; index < screens.length; index++) {
+            if (Math.abs((screens[index][0] - width)) <= 0.0009) {
                 setFontAndBitmap(index);
                 break;
             }
