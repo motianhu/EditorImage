@@ -429,10 +429,10 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         } catch (IOException e) {
             WallpaperLog.d(TAG, "e: " + e.toString());
             e.printStackTrace();
-            Toast.makeText(this, "Save failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Save failed! IOException ", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Save failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Save failed! Exception ", Toast.LENGTH_SHORT).show();
         }
     }
 

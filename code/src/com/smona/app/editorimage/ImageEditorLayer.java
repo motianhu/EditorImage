@@ -498,6 +498,9 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
             view = getChildAt(index);
             if (view instanceof FontEditorLayer) {
                 FontInfo info = (FontInfo) view.getTag();
+                if (info.content == null || "".endsWith(info.content.trim())) {
+                    continue;
+                }
                 LayoutParams param = (LayoutParams) view.getLayoutParams();
                 WallpaperLog.d(
                         TAG,
