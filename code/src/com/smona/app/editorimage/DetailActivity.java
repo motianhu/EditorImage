@@ -204,9 +204,12 @@ public class DetailActivity extends Activity implements OnLongClickListener,
 
     @Override
     public boolean onLongClick(View v) {
-        mMoveView = v;
         mEditorLayer.startDrag(v);
         return true;
+    }
+    
+    public void setMoveView(View v) {
+        mMoveView = v;
     }
 
     @Override

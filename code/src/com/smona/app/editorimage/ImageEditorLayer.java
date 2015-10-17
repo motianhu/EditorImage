@@ -22,7 +22,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewParent;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
@@ -111,6 +110,7 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
         if (!mIsDragging) {
             return;
         }
+        
         float x = ev.getX();
         float y = ev.getY();
         mDragView.move(x, y);
@@ -121,40 +121,21 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
     private View getTouchChildView(MotionEvent ev) {
         int size = getChildCount();
         View view = null;
+        
+        float x = ev.getX();
+        float y = ev.getY();
+        
         for (int index = 0; index < size; index++) {
             view = getChildAt(index);
             if (view instanceof FontEditorLayer) {
                 Rect rect = mTmpRect;
                 view.getHitRect(rect);
-                int[] dropCoordinates = new int[2];
-                getDescendantCoordRelativeToSelf(view, dropCoordinates);
-                if (rect.contains(dropCoordinates[0], dropCoordinates[1])) {
+                if (rect.contains((int)x, (int)y)) {
                     break;
                 }
             }
         }
         return view;
-    }
-
-    private float getDescendantCoordRelativeToSelf(View descendant, int[] coord) {
-        float scale = 1.0f;
-        float[] pt = { coord[0], coord[1] };
-        descendant.getMatrix().mapPoints(pt);
-        scale *= descendant.getScaleX();
-        pt[0] += descendant.getLeft();
-        pt[1] += descendant.getTop();
-        ViewParent viewParent = descendant.getParent();
-        while (viewParent instanceof View && viewParent != this) {
-            final View view = (View) viewParent;
-            view.getMatrix().mapPoints(pt);
-            scale *= view.getScaleX();
-            pt[0] += view.getLeft() - view.getScrollX();
-            pt[1] += view.getTop() - view.getScrollY();
-            viewParent = view.getParent();
-        }
-        coord[0] = (int) Math.round(pt[0]);
-        coord[1] = (int) Math.round(pt[1]);
-        return scale;
     }
 
     private void processUp(MotionEvent ev) {
@@ -207,8 +188,10 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
         if (mIsDragging) {
             return;
         }
+        
         processFontLayer(false);
         mIsDragging = true;
+        mActivity.setMoveView(v);
         beginVibrator();
         beginDrag(v);
         processFontLayer(true);
