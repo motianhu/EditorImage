@@ -21,6 +21,8 @@ public class InputTextLayer extends LinearLayout {
         mSort.add("Imprisha.ttf");
         mSort.add("LearningCurveDashed_OT.otf");
         mSort.add("DroidSansFallback.ttf");
+        mSort.add("Antonio.ttf");
+        mSort.add("HandBoy.ttf");
     }
 
     @Override
