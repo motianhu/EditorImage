@@ -18,9 +18,9 @@ public class InputTextLayer extends LinearLayout {
         super(context, attrs);
         mSort.add("Antonio.ttf");
         mSort.add("HandBoy.ttf");
-        mSort.add("Broadw.ttf");
-        mSort.add("HelveticaNeueUltraLight.ttf");
         mSort.add("Imprisha.ttf");
+        mSort.add("HelveticaNeueUltraLight.ttf");
+        mSort.add("Broadw.ttf");
         mSort.add("LearningCurveDashed_OT.otf");
         mSort.add("DroidSansFallback.ttf");
     }
