@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -51,6 +52,16 @@ public class FontEditorLayer extends FrameLayout implements IChangeText {
 
     private void delSelf() {
         ((ViewGroup) this.getParent()).removeView(this);
+    }
+    
+    public void setGravity(String align) {
+        int gravity = Gravity.CENTER;
+        if ("right".equals(align)) {
+            gravity = Gravity.RIGHT;
+        } else if ("left".equals(align)) {
+            gravity = Gravity.LEFT;
+        }
+        mText.setGravity(gravity);
     }
 
     @Override
@@ -102,6 +113,7 @@ public class FontEditorLayer extends FrameLayout implements IChangeText {
 
     public void init(AssetManager asset, FontInfo info) {
         Typeface typefaceRegular = Typeface.createFromAsset(asset, info.name);
+        info.line = StringUtils.countStringNumbers(info.content, "\n") + 1;
         setLines(info.line);
         if (!TextUtils.isEmpty(info.color) && !"#".equals(info.color)) {
             mText.setTextColor(Color.parseColor(info.color));

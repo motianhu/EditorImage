@@ -56,7 +56,7 @@
     <dimen name="category_small_item_height">170dp</dimen>
     <dimen name="category_big_item_height">240dp</dimen>
     <dimen name="detail_head_padding_top">5dp</dimen>
-    <dimen name="detail_orien_padding_top">70dp</dimen>
+    <dimen name="detail_orien_padding_bottom">5dp</dimen>
     <dimen name="detail_back_margin_left">5dp</dimen>
     <dimen name="detail_delete_margin_right">5dp</dimen>
     <dimen name="left_frame_text_drawable_padding">15dp</dimen>

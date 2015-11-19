@@ -48,7 +48,6 @@
                 android:drawableTop="@drawable/save_pressed"
                 android:text="保存" />
 
-     
             <TextView
                 android:id="@+id/preview"
                 style="@style/detail_btn"
@@ -105,8 +104,8 @@
         android:id="@+id/orien"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_gravity="top"
-        android:layout_marginTop="@dimen/detail_orien_padding_top" >
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/detail_orien_padding_bottom" >
 
         <ImageView
             android:id="@+id/left"
@@ -140,5 +139,40 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/move_bottom" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/text_intenal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="100dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/text_left_algin"
+            style="@style/detail_btn"
+            android:onClick="onClick"
+            android:drawableTop="@drawable/batch_align_left"
+            android:text="左对齐" />
+
+        <TextView
+            android:id="@+id/text_center_algin"
+            style="@style/detail_btn"
+            android:onClick="onClick"
+            android:drawableTop="@drawable/batch_align_center"
+            android:text="居中对齐" />
+
+        <TextView
+            android:id="@+id/text_right_algin"
+            style="@style/detail_btn"
+            android:onClick="onClick"
+            android:drawableTop="@drawable/batch_align_right"
+            android:text="右对齐" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/security" />
 
 </com.smona.app.editorimage.DetailLayer>

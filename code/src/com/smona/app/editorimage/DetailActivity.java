@@ -37,6 +37,8 @@ import android.widget.FrameLayout.LayoutParams;
 public class DetailActivity extends Activity implements OnLongClickListener,
         OnClickListener {
     private static final String TAG = "DetailActivity";
+    public static final String HUANGHANG_SIGN = "|*|";
+    public static final String HUANGHANG = "\n";
 
     private ImageEditorLayer mEditorLayer;
 
@@ -207,7 +209,7 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         mEditorLayer.startDrag(v);
         return true;
     }
-    
+
     public void setMoveView(View v) {
         mMoveView = v;
     }
@@ -262,6 +264,15 @@ public class DetailActivity extends Activity implements OnLongClickListener,
             break;
         case R.id.reset_last:
             resetLastOp();
+            break;
+        case R.id.text_left_algin:
+            clickAlign("left");
+            break;
+        case R.id.text_center_algin:
+            clickAlign("center");
+            break;
+        case R.id.text_right_algin:
+            clickAlign("right");
             break;
         }
     }
@@ -346,8 +357,7 @@ public class DetailActivity extends Activity implements OnLongClickListener,
 
         mCurPos += 1;
     }
-    
-    
+
     private void resetLastOp() {
         mEditorLayer.resetLastOp();
     }
@@ -372,6 +382,18 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         setEditorBackground(pos);
 
         mCurPos -= 1;
+    }
+
+    private void clickAlign(String align) {
+        if (mMoveView == null) {
+            return;
+        }
+        Object tag = mMoveView.getTag();
+        if (tag instanceof FontInfo) {
+            ((FontInfo) tag).align = align;
+        }
+        FontEditorLayer text = (FontEditorLayer) mMoveView;
+        text.setGravity(align);
     }
 
     private void setEditorBackground(int pos) {
@@ -408,6 +430,7 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         info.line = 1;
         info.color = "#ffffff";
         info.fontSize = 36;
+        info.align = "center";
         info.name = "DroidSansFallback.ttf";
         mEditorLayer.addFontTextView(info);
         mEditorLayer.onResume();
@@ -432,10 +455,12 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         } catch (IOException e) {
             WallpaperLog.d(TAG, "e: " + e.toString());
             e.printStackTrace();
-            Toast.makeText(this, "Save failed! IOException ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Save failed! IOException ",
+                    Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Save failed! Exception ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Save failed! Exception ", Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
@@ -460,10 +485,14 @@ public class DetailActivity extends Activity implements OnLongClickListener,
 
     private void writeFont(Element root, FontInfo info) {
         Element font = root.addElement("font");
+        WallpaperLog.d(TAG, "info.content: " + info.content);
+        info.content = info.content.replace(HUANGHANG, HUANGHANG_SIGN);
+        WallpaperLog.d(TAG, "info.content: " + info.content);
         font.addAttribute("content", info.content);
         font.addAttribute("size", info.fontSize + "");
         font.addAttribute("coordinate", info.coord);
         font.addAttribute("color", info.color);
+        font.addAttribute("align", info.align);
         font.addAttribute("line", info.line + "");
         font.addAttribute("name", info.name);
         font.addAttribute("rotation", info.rotation + "");
@@ -523,6 +552,8 @@ public class DetailActivity extends Activity implements OnLongClickListener,
                 info.line = Integer.valueOf(attr.getText());
                 attr = e.attribute("name");
                 info.name = attr.getText();
+                attr = e.attribute("align");
+                info.align = attr.getText();
                 attr = e.attribute("rotation");
                 info.rotation = Float.valueOf(attr.getText());
                 infos.add(info);

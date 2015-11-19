@@ -2,6 +2,7 @@ package com.smona.app.editorimage.preview;
 
 import java.util.ArrayList;
 
+import com.smona.app.editorimage.DetailActivity;
 import com.smona.app.editorimage.EditorUtil;
 import com.smona.app.editorimage.FontEditorLayer;
 import com.smona.app.editorimage.FontInfo;
@@ -48,15 +49,19 @@ public class ImageEditorLayer extends FrameLayout {
                 LayoutParams.WRAP_CONTENT);
         // coord is dp.
         String[] coors = info.coord.split(",");
+        info.content = info.content.replace(DetailActivity.HUANGHANG_SIGN,
+                DetailActivity.HUANGHANG);
         params.leftMargin = (int) (Float.valueOf(coors[0]) * scale);
         int mImageCropHeight = (int) (screen_base_dp * scale)
                 - EditorUtil.getSceenInfo().mScreenHeight;
-        WallpaperLog.d(TAG, "coors: " + coors + ", mImageCropHeight: " + mImageCropHeight + ", scale: " + scale);
+        WallpaperLog.d(TAG, "coors: " + coors + ", mImageCropHeight: "
+                + mImageCropHeight + ", scale: " + scale);
         params.topMargin = (int) (Float.valueOf(coors[1]) * scale)
                 - mImageCropHeight / 2;
         view.init(mAssetManager, info);
         view.setTag(info);
         addView(view, params);
         view.setText(info.content);
+        view.setGravity(info.align);
     }
 }

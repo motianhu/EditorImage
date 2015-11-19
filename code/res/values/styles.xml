@@ -151,6 +151,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">@dimen/emotion_element_line_margin_left</item>
         <item name="android:gravity">center</item>
+        <item name="android:onClick">onClick</item>
         <item name="android:shadowColor">#4d4d4d</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:shadowDx">0</item>

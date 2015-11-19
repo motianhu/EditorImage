@@ -1,58 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
 
-    <string name="app_name">Emotion</string>
-    <string name="download">下载</string>
-    <string name="downloading">0%</string>
-    <string name="save">保存</string>
-    <string name="saveing">保存中</string>
-    <string name="preview">预览</string>
+    <string name="app_name">心情图片编辑工具</string>
     <string name="set">设置</string>
-    <string name="like">赞</string>
-    <string name="liked">已赞</string>
-    <string name="share">分享</string>
-    <string name="emotion">心情</string>
-    <string name="mito">美图</string>
-    <string name="mywallpaper">我的壁纸</string>
-    <string name="likewallpaper">喜欢的壁纸</string>
-    <string name="upgrade">检查更新</string>
-    <string name="feedback">反馈意见</string>
-    <string name="about">关于</string>
-    <string name="enter">进入</string>
-    <string name="about_version">版本: </string>
-    <string name="about_email">邮箱: amigopaperofficial@gmail.com</string>
-    <string name="about_facebook">Facebook ID: Evy Fung</string>
-    <string name="back_hint">"是否放弃下载？按两次即可退出"</string>
-    <string name="submit">提交</string>
-    <string name="feedback_hint">请在这里输入你的反馈意见给我们，谢谢！</string>
-    <string name="lastest_version">最新版本:</string>
-    <string name="version">4.0.0.b </string>
-    <string name="description">每一种心情都有一个出口</string>
-    <string name="input_finish">完成</string>
-    <string name="filter_all">全部</string>
-    <string name="filter_emotion">心情</string>
-    <string name="filter_mito">美图</string>
-    <string name="gallery">图库</string>
-    <string name="camera">相机</string>
-    <string name="cut_cancel">取消</string>
-    <string name="cut_ok">保存</string>
-    <string name="detail_downloading_refuse_action_hint">正在下载,请下载完在做操作</string>
-    <string name="no_access_sd">没有可用的存储设备</string>
-    <string name="no_sd_try_later">检测不到SD卡，请稍候再试</string>
-    <string name="inter_lock_merroy">存储空间不足，请释放空间</string>
-    <string name="sd_card_title">SD卡</string>
-    <string name="sd_no_sufficient_merroy">SD卡存储空间不足，文件将保存到内部存储器</string>
-    <string name="set_success">壁纸设置成功</string>
-    <string name="set_failded">壁纸设置失败</string>
-    <string name="downloaded_failed">下载失败</string>
-    <string name="downloaded_success">下载完成</string>
-    <string name="save_success">保存成功</string>
-    <string name="no_network">无网络</string>
-    <string name="load_failed">加载失败</string>
-    <string name="no_content">暂无内容</string>
-    <string name="no_network_hint">请检查网络设置并在此点击屏幕</string>
     <string name="fontsize">字体大小</string>
-    <string name="font_family_text">Amigo</string>
+    <string name="font_family_text">Mood</string>
     <string name="fontline">行数</string>
 
 </resources>

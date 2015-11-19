@@ -110,7 +110,7 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
         if (!mIsDragging) {
             return;
         }
-        
+
         float x = ev.getX();
         float y = ev.getY();
         mDragView.move(x, y);
@@ -121,16 +121,16 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
     private View getTouchChildView(MotionEvent ev) {
         int size = getChildCount();
         View view = null;
-        
+
         float x = ev.getX();
         float y = ev.getY();
-        
+
         for (int index = 0; index < size; index++) {
             view = getChildAt(index);
             if (view instanceof FontEditorLayer) {
                 Rect rect = mTmpRect;
                 view.getHitRect(rect);
-                if (rect.contains((int)x, (int)y)) {
+                if (rect.contains((int) x, (int) y)) {
                     break;
                 }
             }
@@ -169,11 +169,12 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
                 getContext()).inflate(R.layout.font_editor_layer, null);
         view.setOnLongClickListener(mOnLongListener);
         view.setOnClickListener(this);
-
+        WallpaperLog.d(TAG, "addFontTextView info: " + info);
         LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT);
         String[] coors = info.coord.split(",");
-        WallpaperLog.d(TAG, "");
+        info.content = info.content.replace(DetailActivity.HUANGHANG_SIGN,
+                DetailActivity.HUANGHANG);
         params.leftMargin = (int) (Float.valueOf(coors[0]) * EditorUtil
                 .getSceenInfo().mScreenScale);
         params.topMargin = (int) (Float.valueOf(coors[1]) * EditorUtil
@@ -182,13 +183,14 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
         view.setTag(info);
         addView(view, params);
         view.setText(info.content);
+        view.setGravity(info.align);
     }
 
     public void startDrag(View v) {
         if (mIsDragging) {
             return;
         }
-        
+
         processFontLayer(false);
         mIsDragging = true;
         mActivity.setMoveView(v);
@@ -494,6 +496,7 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
                         / EditorUtil.getSceenInfo().mScreenScale + ","
                         + param.topMargin
                         / EditorUtil.getSceenInfo().mScreenScale;
+                info.line = StringUtils.countStringNumbers(info.content, "\n") + 1;
                 infos.add(info);
             }
         }
