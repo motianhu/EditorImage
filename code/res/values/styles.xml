@@ -136,7 +136,7 @@
     </style>
 
     <style name="DialogStyle" parent="@android:style/Theme.Dialog">
-        <item name="android:windowBackground"> @android:color/transparent </item>
+        <item name="android:windowBackground"> @color/main_frame_emotion_text_color_unselect </item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 

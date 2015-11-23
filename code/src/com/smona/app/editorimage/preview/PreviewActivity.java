@@ -237,7 +237,7 @@ public class PreviewActivity extends Activity implements OnClickListener {
                 attr = e.attribute("name");
                 info.name = attr.getText();
                 attr = e.attribute("align");
-                info.align = attr.getText();
+                info.align = attr != null ? attr.getText() : "center";
                 attr = e.attribute("rotation");
                 info.rotation = Float.valueOf(attr.getText());
                 infos.add(info);

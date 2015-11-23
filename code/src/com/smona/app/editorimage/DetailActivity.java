@@ -191,6 +191,11 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         findViewById(R.id.aligin_right).setOnClickListener(this);
         findViewById(R.id.reset_last).setOnClickListener(this);
 
+        //align
+        findViewById(R.id.text_left_algin).setOnClickListener(this);
+        findViewById(R.id.text_center_algin).setOnClickListener(this);
+        findViewById(R.id.text_right_algin).setOnClickListener(this);
+        
         initZipMgr();
 
         int count = mImpressionFiles.size();
@@ -553,7 +558,7 @@ public class DetailActivity extends Activity implements OnLongClickListener,
                 attr = e.attribute("name");
                 info.name = attr.getText();
                 attr = e.attribute("align");
-                info.align = attr.getText();
+                info.align = attr != null ? attr.getText() : "center";
                 attr = e.attribute("rotation");
                 info.rotation = Float.valueOf(attr.getText());
                 infos.add(info);
