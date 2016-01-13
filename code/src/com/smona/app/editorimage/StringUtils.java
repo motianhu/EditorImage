@@ -14,8 +14,6 @@ import android.widget.TextView;
  * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2011-7-22
  */
 public class StringUtils {
-    private static final String TAG = "StringUtils";
-
     private StringUtils() {
         throw new AssertionError();
     }

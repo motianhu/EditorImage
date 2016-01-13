@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.smona.app.editorimage.config.Config;
+
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
@@ -173,8 +175,10 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
         LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT);
         String[] coors = info.coord.split(",");
-        info.content = info.content.replace(DetailActivity.HUANGHANG_SIGN,
-                DetailActivity.HUANGHANG);
+        if (Config.SUPPORT_ENTER) {
+            info.content = info.content.replace(Config.NEW_LINE_SIGN,
+                    Config.NEW_LINE);
+        }
         params.leftMargin = (int) (Float.valueOf(coors[0]) * EditorUtil
                 .getSceenInfo().mScreenScale);
         params.topMargin = (int) (Float.valueOf(coors[1]) * EditorUtil
@@ -404,20 +408,6 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
         });
 
         edit.setText(text.getText());
-        // edit.setOnEditorActionListener(new OnEditorActionListener() {
-        //
-        // @Override
-        // public boolean onEditorAction(TextView v, int actionId,
-        // KeyEvent event) {
-        // boolean isEnter = (event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
-        // if(isEnter) {
-        // String content = v.getText() + "\n";
-        // v.setText(content);
-        // }
-        // return isEnter;
-        // }
-        //
-        // });
         edit.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -446,7 +436,11 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
                 info.content = content;
 
                 text.setText(content);
-                text.setLines(info.line);
+                if (Config.SUPPORT_ENTER) {
+                    text.setLines(info.line);
+                } else {
+                    text.setLines(1);
+                }
             }
         });
 
@@ -461,11 +455,6 @@ public class ImageEditorLayer extends FrameLayout implements OnClickListener {
         mDialog.getWindow().clearFlags(
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        // mDialog.getWindow().setSoftInputMode(
-        // WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        // InputMethodManager inManager = (InputMethodManager) edit.getContext()
-        // .getSystemService(Context.INPUT_METHOD_SERVICE);
-        // inManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     private void cancelDialog() {

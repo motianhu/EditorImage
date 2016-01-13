@@ -45,9 +45,6 @@ public class DetailActivity extends Activity implements OnLongClickListener,
     private static final boolean INTENERL = Config.INTENERL;
 
     private static final String TAG = "DetailActivity";
-    public static final String HUANGHANG_SIGN = "|*|";
-    public static final String HUANGHANG = "\n";
-
     private ImageEditorLayer mEditorLayer;
 
     enum State {
@@ -203,8 +200,14 @@ public class DetailActivity extends Activity implements OnLongClickListener,
 
         // align
         findViewById(R.id.text_left_algin).setOnClickListener(this);
+        findViewById(R.id.text_left_algin).setVisibility(
+                Config.SUPPORT_ENTER ? View.VISIBLE : View.GONE);
         findViewById(R.id.text_center_algin).setOnClickListener(this);
+        findViewById(R.id.text_center_algin).setVisibility(
+                Config.SUPPORT_ENTER ? View.VISIBLE : View.GONE);
         findViewById(R.id.text_right_algin).setOnClickListener(this);
+        findViewById(R.id.text_right_algin).setVisibility(
+                Config.SUPPORT_ENTER ? View.VISIBLE : View.GONE);
 
         // read link
         findViewById(R.id.read_url).setOnClickListener(this);
@@ -424,7 +427,7 @@ public class DetailActivity extends Activity implements OnLongClickListener,
             return;
         }
         final EditText edit = new EditText(this);
-        edit.setText("http://news.163.com/16/0113/08/BD6RQDT500011229.html");
+        edit.setText(mReadUrl);
 
         new AlertDialog.Builder(this)
                 .setTitle("请输入阅读链接")
@@ -544,7 +547,10 @@ public class DetailActivity extends Activity implements OnLongClickListener,
     private void writeFont(Element root, FontInfo info) {
         Element font = root.addElement("font");
         WallpaperLog.d(TAG, "info.content: " + info.content);
-        info.content = info.content.replace(HUANGHANG, HUANGHANG_SIGN);
+        if (Config.SUPPORT_ENTER) {
+            info.content = info.content.replace(Config.NEW_LINE,
+                    Config.NEW_LINE_SIGN);
+        }
         WallpaperLog.d(TAG, "info.content: " + info.content);
         font.addAttribute("content", info.content);
         font.addAttribute("size", info.fontSize + "");

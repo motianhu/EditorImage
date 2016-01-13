@@ -8,5 +8,11 @@ public class Config {
     public static final String ZIP = ".zip";
     public static final String PROPERTIES = ".properties";
     
+    //enter new line
+    public static final String NEW_LINE_SIGN = "|*|";
+    public static final String NEW_LINE = "\n";
+
+    //internal switch
+    public static final boolean SUPPORT_ENTER = false;
     public static final boolean INTENERL = false;
 }
