@@ -11,26 +11,29 @@ import java.util.zip.CheckedOutputStream;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipOutputStream;
 
+import com.smona.app.editorimage.config.Config;
+
 public class ZipFileAction {
     public void zip(String sourceFile, String effectFile, String xmlFile,
-            String outputFileName) throws Exception {
+            String property, String outputFileName) throws Exception {
         OutputStream output = new FileOutputStream(WallpaperUtil.RES_DIR_ZIP
                 + outputFileName);
         CheckedOutputStream stream = new CheckedOutputStream(output,
                 new CRC32());
         ZipOutputStream out = new ZipOutputStream(stream);
-        compress(out, sourceFile, effectFile, xmlFile);
+        compress(out, sourceFile, effectFile, xmlFile, property);
         out.closeEntry();
         out.close();
     }
 
     private void compress(ZipOutputStream out, String sourceFile,
-            String effectFile, String xmlFile) {
-        compressFile(WallpaperUtil.RES_DIR_SOURCE, sourceFile, ".jpg", ".jpg",
+            String effectFile, String xmlFile, String property) {
+        compressFile(WallpaperUtil.RES_DIR_SOURCE, sourceFile, Config.JPG, Config.JPG,
                 out);
-        compressFile(WallpaperUtil.RES_DIR_IMPRESSION, effectFile, ".jpg",
+        compressFile(WallpaperUtil.RES_DIR_IMPRESSION, effectFile, Config.JPG,
                 "_font.jpg", out);
-        compressFile(WallpaperUtil.RES_DIR_XML, xmlFile, ".xml", ".xml", out);
+        compressFile(WallpaperUtil.RES_DIR_XML, xmlFile, Config.XML, Config.XML, out);
+        compressFile(WallpaperUtil.RES_DIR_XML, property, Config.PROPERTIES, Config.PROPERTIES, out);
     }
 
     private void compressFile(String path, String name, String preffix,

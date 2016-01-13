@@ -20,22 +20,30 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
+import com.smona.app.editorimage.config.Config;
 import com.smona.app.editorimage.preview.PreviewActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.FrameLayout.LayoutParams;
 
 public class DetailActivity extends Activity implements OnLongClickListener,
         OnClickListener {
+
+    private static final boolean INTENERL = Config.INTENERL;
+
     private static final String TAG = "DetailActivity";
     public static final String HUANGHANG_SIGN = "|*|";
     public static final String HUANGHANG = "\n";
@@ -52,6 +60,8 @@ public class DetailActivity extends Activity implements OnLongClickListener,
 
     private int mCurPos = 0;
     private ZipManager mZipMgr;
+
+    private String mReadUrl = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +91,7 @@ public class DetailActivity extends Activity implements OnLongClickListener,
 
     private void initFiles() {
         ArrayList<String> zipFiles = new ArrayList<String>();
-        initFiles(getZipDir(), zipFiles, ".zip");
+        initFiles(getZipDir(), zipFiles, Config.ZIP);
         initFiles(getImpressDir(), mImpressionFiles);
         sortFiles(mImpressionFiles, zipFiles);
 
@@ -91,7 +101,7 @@ public class DetailActivity extends Activity implements OnLongClickListener,
     }
 
     private void initFiles(String path, ArrayList<String> list) {
-        initFiles(path, list, ".jpg");
+        initFiles(path, list, Config.JPG);
     }
 
     private void initFiles(String path, ArrayList<String> list, String suffix) {
@@ -191,11 +201,16 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         findViewById(R.id.aligin_right).setOnClickListener(this);
         findViewById(R.id.reset_last).setOnClickListener(this);
 
-        //align
+        // align
         findViewById(R.id.text_left_algin).setOnClickListener(this);
         findViewById(R.id.text_center_algin).setOnClickListener(this);
         findViewById(R.id.text_right_algin).setOnClickListener(this);
-        
+
+        // read link
+        findViewById(R.id.read_url).setOnClickListener(this);
+        findViewById(R.id.read_url).setVisibility(
+                INTENERL ? View.GONE : View.VISIBLE);
+
         initZipMgr();
 
         int count = mImpressionFiles.size();
@@ -278,6 +293,9 @@ public class DetailActivity extends Activity implements OnLongClickListener,
             break;
         case R.id.text_right_algin:
             clickAlign("right");
+            break;
+        case R.id.read_url:
+            clickReadUrl();
             break;
         }
     }
@@ -401,18 +419,46 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         text.setGravity(align);
     }
 
+    private void clickReadUrl() {
+        if (INTENERL) {
+            return;
+        }
+        final EditText edit = new EditText(this);
+        edit.setText("http://news.163.com/16/0113/08/BD6RQDT500011229.html");
+
+        new AlertDialog.Builder(this)
+                .setTitle("请输入阅读链接")
+                .setView(edit)
+                .setPositiveButton("确定",
+                        new android.content.DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                    int which) {
+                                String url = edit.getText().toString();
+                                if (!TextUtils.isEmpty(url)) {
+                                    String picName = (String) mEditorLayer
+                                            .getTag();
+                                    String simpleFileName = picName.replace(
+                                            Config.JPG, "");
+                                    writeConfig(simpleFileName, edit.getText()
+                                            .toString());
+                                }
+                            }
+                        }).setNegativeButton("取消", null).create().show();
+    }
+
     private void setEditorBackground(int pos) {
         String filePath = mImpressionFiles.get(pos);
         String simpleFileName = filePath;
-        simpleFileName = simpleFileName.replace(".jpg", "");
+        simpleFileName = simpleFileName.replace(Config.JPG, "");
         mEditorLayer.setTag(filePath);
         mEditorLayer.setBackground(new BitmapDrawable(this.getResources(),
                 BitmapFactory.decodeFile(getImpressDir() + filePath)));
 
-        File zipFile = new File(getZipDir() + simpleFileName + ".zip");
+        File zipFile = new File(getZipDir() + simpleFileName + Config.ZIP);
         mEditorLayer.removeAllViews();
         if (zipFile.exists()) {
-            setFontText(simpleFileName + ".zip");
+            setFontText(simpleFileName + Config.ZIP);
         }
     }
 
@@ -425,6 +471,11 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         String fileName = zipFile.substring(0, zipFile.length() - 4);
         ArrayList<FontInfo> infos = readFontInfo(cookie, fileName);
         mEditorLayer.loadViews(infos);
+
+        if (INTENERL) {
+            return;
+        }
+        mReadUrl = (String) PropertiesUtils.getProperty(fileName, "read_url");
     }
 
     private void clickAdd() {
@@ -447,15 +498,17 @@ public class DetailActivity extends Activity implements OnLongClickListener,
             showMessage("有文字才可保存!请新添加文字");
             return;
         }
+
         try {
             String picName = (String) mEditorLayer.getTag();
             WallpaperLog.d(TAG, "picName: " + picName + ",infos: " + infos);
             String simpleFileName = picName;
-            simpleFileName = simpleFileName.replace(".jpg", "");
+            simpleFileName = simpleFileName.replace(Config.JPG, "");
             writeXML(simpleFileName, infos);
             ZipFileAction action = new ZipFileAction();
             action.zip(simpleFileName, simpleFileName, simpleFileName,
-                    simpleFileName + ".zip");
+                    simpleFileName, simpleFileName + Config.ZIP);
+
             Toast.makeText(this, "Save success", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             WallpaperLog.d(TAG, "e: " + e.toString());
@@ -478,7 +531,7 @@ public class DetailActivity extends Activity implements OnLongClickListener,
             writeFont(root, info);
         }
         FileOutputStream fos = new FileOutputStream(getXMLDir() + fileName
-                + ".xml");
+                + Config.XML);
         OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
         OutputFormat of = new OutputFormat();
         of.setEncoding("UTF-8");
@@ -503,6 +556,19 @@ public class DetailActivity extends Activity implements OnLongClickListener,
         font.addAttribute("rotation", info.rotation + "");
     }
 
+    private void writeConfig(String file, String url) {
+        String filename = getXMLDir() + file + ".properties";
+        try {
+            String value = (String) PropertiesUtils.getProperty(filename,
+                    "read_url");
+            WallpaperLog.d(TAG, "writeConfig value: " + value);
+            PropertiesUtils.save(filename, "read_url", url);
+        } catch (IOException e) {
+            e.printStackTrace();
+            WallpaperLog.d(TAG, "writeConfig e: " + e);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -516,7 +582,7 @@ public class DetailActivity extends Activity implements OnLongClickListener,
     private ArrayList<FontInfo> readFontInfo(int cookie, String xmlName) {
         ArrayList<FontInfo> infos = new ArrayList<FontInfo>();
         try {
-            readXML(cookie, xmlName + ".xml", infos);
+            readXML(cookie, xmlName + Config.XML, infos);
         } catch (IOException e1) {
             e1.printStackTrace();
         }

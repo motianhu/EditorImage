@@ -168,6 +168,13 @@
             android:onClick="onClick"
             android:drawableTop="@drawable/batch_align_right"
             android:text="右对齐" />
+        
+        <TextView
+            android:id="@+id/read_url"
+            style="@style/detail_btn"
+            android:onClick="onClick"
+            android:drawableTop="@drawable/batch_align_right"
+            android:text="阅读链接" />
     </LinearLayout>
 
     <ImageView

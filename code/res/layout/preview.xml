@@ -19,8 +19,9 @@
 
         <TextView
             android:id="@+id/file_name"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:ellipsize="marquee"
             android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
             android:gravity="center" />
 
@@ -41,6 +42,15 @@
             android:drawableTop="@drawable/next"
             android:gravity="center"
             android:text="下一张" />
+        
+        <TextView
+            android:id="@+id/read_url"
+            android:layout_width="@dimen/detail_back_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
+            android:drawableTop="@drawable/next"
+            android:gravity="center"
+            android:text="阅读" />
     </LinearLayout>
 
 </com.smona.app.editorimage.preview.PreviewLayer>

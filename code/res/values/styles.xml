@@ -154,6 +154,7 @@
         <item name="android:onClick">onClick</item>
         <item name="android:shadowColor">#4d4d4d</item>
         <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:shadowDx">0</item>
         <item name="android:shadowDy">-3</item>
         <item name="android:shadowRadius">3</item>

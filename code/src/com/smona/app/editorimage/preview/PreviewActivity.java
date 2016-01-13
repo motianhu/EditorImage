@@ -17,16 +17,20 @@ import org.dom4j.io.SAXReader;
 
 import com.smona.app.editorimage.EditorUtil;
 import com.smona.app.editorimage.FontInfo;
+import com.smona.app.editorimage.PropertiesUtils;
 import com.smona.app.editorimage.R;
 import com.smona.app.editorimage.WallpaperLog;
 import com.smona.app.editorimage.WallpaperUtil;
 import com.smona.app.editorimage.ZipManager;
+import com.smona.app.editorimage.config.Config;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -40,7 +44,11 @@ import android.widget.Toast;
 public class PreviewActivity extends Activity implements OnClickListener {
     private static final String TAG = "PreviewActivity";
 
+    private static final boolean INTENERL = Config.INTENERL;
+
     private TextView mFileName = null;
+
+    private String mReadUrl = null;
 
     private ZipManager mZipMgr;
     private ArrayList<String> mZipFiles = new ArrayList<String>();
@@ -79,18 +87,28 @@ public class PreviewActivity extends Activity implements OnClickListener {
         if (TextUtils.isEmpty(mCurrentZip)) {
             return;
         }
-        
+
         mFileName = (TextView) findViewById(R.id.file_name);
         mFileName.setText(mCurrentZip);
         findViewById(R.id.previous).setOnClickListener(this);
         findViewById(R.id.next).setOnClickListener(this);
+
+        findViewById(R.id.read_url).setOnClickListener(this);
+        findViewById(R.id.read_url).setVisibility(
+                INTENERL ? View.GONE : View.VISIBLE);
 
         setEditorBg();
     }
 
     private void setEditorBg() {
         float width = EditorUtil.getSceenInfo().mScreenWidth;
-        WallpaperLog.d(TAG, "scale: " + width + ", month_day_text_padding: " + this.getResources().getDimensionPixelSize(R.dimen.month_day_text_padding));
+        WallpaperLog.d(
+                TAG,
+                "scale: "
+                        + width
+                        + ", month_day_text_padding: "
+                        + this.getResources().getDimensionPixelSize(
+                                R.dimen.month_day_text_padding));
         int index = 0;
         for (; index < screens.length; index++) {
             if (Math.abs((screens[index][0] - width)) <= 0.0009) {
@@ -117,6 +135,21 @@ public class PreviewActivity extends Activity implements OnClickListener {
             mImageLayer.setBackgroundDrawable(new BitmapDrawable(
                     getResources(), temp));
         }
+
+        if (INTENERL) {
+            return;
+        }
+        readReadUrl(cookie, fileName);
+    }
+
+    private void readReadUrl(int cookie, String fileName) {
+        try {
+            InputStream in = readInstream(cookie, fileName + Config.PROPERTIES);
+            mReadUrl = (String) PropertiesUtils.getProperty(in, "read_url");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        WallpaperLog.d(TAG, "setFontAndBitmap mReadUrl: " + mReadUrl);
     }
 
     private String getZipDir() {
@@ -154,7 +187,7 @@ public class PreviewActivity extends Activity implements OnClickListener {
         }
         for (String filePath : files) {
             WallpaperLog.d(TAG, "aquireFontInfo filePath: " + filePath);
-            if (filePath.endsWith(".zip")) {
+            if (filePath.endsWith(Config.ZIP)) {
                 mZipFiles.add(filePath);
             }
         }
@@ -168,7 +201,7 @@ public class PreviewActivity extends Activity implements OnClickListener {
     }
 
     private void readZip(String file) {
-        String zipName = file.replace(".jpg", ".zip");
+        String zipName = file.replace(Config.JPG, Config.ZIP);
         int size = mZipFiles.size();
         for (int i = 0; i < size; i++) {
             String filePath = mZipFiles.get(i);
@@ -184,7 +217,7 @@ public class PreviewActivity extends Activity implements OnClickListener {
     private ArrayList<FontInfo> readFontInfo(int cookie, String xmlName) {
         ArrayList<FontInfo> infos = new ArrayList<FontInfo>();
         try {
-            readXML(cookie, xmlName + ".xml", infos);
+            readXML(cookie, xmlName + Config.XML, infos);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -195,7 +228,7 @@ public class PreviewActivity extends Activity implements OnClickListener {
         InputStream is = null;
         try {
 
-            is = mZipMgr.getEntryInputStream(cookie, fileName + ".jpg");
+            is = mZipMgr.getEntryInputStream(cookie, fileName + Config.JPG);
             return BitmapFactory.decodeStream(is);
         } catch (IOException e) {
             e.printStackTrace();
@@ -205,11 +238,17 @@ public class PreviewActivity extends Activity implements OnClickListener {
 
     private void readXML(int cookie, String fileName, ArrayList<FontInfo> infos)
             throws IOException {
-        InputStream is = mZipMgr.getEntryInputStream(cookie, fileName);
+        InputStream is = readInstream(cookie, fileName);
         if (is == null) {
             return;
         }
         parseXml(is, infos);
+    }
+
+    private InputStream readInstream(int cookie, String fileName)
+            throws IOException {
+        InputStream is = mZipMgr.getEntryInputStream(cookie, fileName);
+        return is;
     }
 
     private void parseXml(InputStream is, ArrayList<FontInfo> infos) {
@@ -306,6 +345,9 @@ public class PreviewActivity extends Activity implements OnClickListener {
         case R.id.next:
             clickNext();
             break;
+        case R.id.read_url:
+            gotoBrowser();
+            break;
         }
     }
 
@@ -343,6 +385,16 @@ public class PreviewActivity extends Activity implements OnClickListener {
         mFileName.setText(mCurrentZip);
         setEditorBg();
         mCurPos -= 1;
+    }
+
+    private void gotoBrowser() {
+        if (TextUtils.isEmpty(mReadUrl)) {
+            Toast.makeText(this, "URL不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Uri uri = Uri.parse(mReadUrl);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 
 }
