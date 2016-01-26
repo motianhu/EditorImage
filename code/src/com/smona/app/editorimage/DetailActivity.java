@@ -568,7 +568,7 @@ public class DetailActivity extends Activity implements OnLongClickListener,
             String value = (String) PropertiesUtils.getProperty(filename,
                     "read_url");
             WallpaperLog.d(TAG, "writeConfig value: " + value);
-            PropertiesUtils.save(filename, "read_url", url);
+            PropertiesUtils.save(filename, "read_url", url.trim());
         } catch (IOException e) {
             e.printStackTrace();
             WallpaperLog.d(TAG, "writeConfig e: " + e);
