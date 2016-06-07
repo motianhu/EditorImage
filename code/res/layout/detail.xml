@@ -28,37 +28,37 @@
                 android:id="@+id/add"
                 style="@style/detail_btn"
                 android:drawableTop="@drawable/add"
-                android:text="添文字" />
+                android:text="@string/add" />
 
             <TextView
                 android:id="@+id/previous"
                 style="@style/detail_btn"
                 android:drawableTop="@drawable/return_pressed"
-                android:text="上一张" />
+                android:text="@string/previous" />
 
             <TextView
                 android:id="@+id/next"
                 style="@style/detail_btn"
                 android:drawableTop="@drawable/next"
-                android:text="下一张" />
+                android:text="@string/next" />
 
             <TextView
                 android:id="@+id/save"
                 style="@style/detail_btn"
                 android:drawableTop="@drawable/save_pressed"
-                android:text="保存" />
+                android:text="@string/save" />
 
             <TextView
                 android:id="@+id/preview"
                 style="@style/detail_btn"
                 android:drawableTop="@drawable/preview_pressed"
-                android:text="预览" />
+                android:text="@string/preview" />
 
             <TextView
                 android:id="@+id/batch"
                 style="@style/detail_btn"
                 android:drawableTop="@drawable/batch"
-                android:text="批量" />
+                android:text="@string/batch" />
         </LinearLayout>
 
         <LinearLayout
@@ -72,31 +72,31 @@
                 android:id="@+id/recovery"
                 style="@style/detail_btn"
                 android:drawableTop="@drawable/batch_align_return"
-                android:text="返回" />
+                android:text="@string/recovery" />
 
             <TextView
                 android:id="@+id/aligin_left"
                 style="@style/detail_btn"
                 android:drawableTop="@drawable/batch_align_left"
-                android:text="左对齐" />
+                android:text="@string/aligin_left" />
 
             <TextView
                 android:id="@+id/aligin_center"
                 style="@style/detail_btn"
                 android:drawableTop="@drawable/batch_align_center"
-                android:text="居中" />
+                android:text="@string/aligin_center" />
 
             <TextView
                 android:id="@+id/aligin_right"
                 style="@style/detail_btn"
                 android:drawableTop="@drawable/batch_align_right"
-                android:text="右对齐" />
+                android:text="@string/aligin_right" />
 
             <TextView
                 android:id="@+id/reset_last"
                 style="@style/detail_btn"
                 android:drawableTop="@drawable/batch_align_right"
-                android:text="恢复" />
+                android:text="@string/reset_last" />
         </LinearLayout>
     </LinearLayout>
 
@@ -153,28 +153,28 @@
             style="@style/detail_btn"
             android:onClick="onClick"
             android:drawableTop="@drawable/batch_align_left"
-            android:text="左对齐" />
+            android:text="@string/text_left_algin" />
 
         <TextView
             android:id="@+id/text_center_algin"
             style="@style/detail_btn"
             android:onClick="onClick"
             android:drawableTop="@drawable/batch_align_center"
-            android:text="居中对齐" />
+            android:text="@string/text_center_algin" />
 
         <TextView
             android:id="@+id/text_right_algin"
             style="@style/detail_btn"
             android:onClick="onClick"
             android:drawableTop="@drawable/batch_align_right"
-            android:text="右对齐" />
+            android:text="@string/text_right_algin" />
         
         <TextView
             android:id="@+id/read_url"
             style="@style/detail_btn"
             android:onClick="onClick"
             android:drawableTop="@drawable/batch_align_right"
-            android:text="阅读链接" />
+            android:text="@string/read_url" />
     </LinearLayout>
 
     <ImageView

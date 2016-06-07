@@ -7,8 +7,6 @@ import java.util.zip.ZipFile;
 
 public class ZipManager {
 
-    private static final String TAG = ZipManager.class.getSimpleName();
-
     private Vector<String> mZipPaths = new Vector<String>();
     private LinkedHashMap<String, ZipFile> mLinkedZipFile = new LinkedHashMap<String, ZipFile>();
     private boolean mClosed = false;

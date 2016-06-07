@@ -13,6 +13,6 @@ public class Config {
     public static final String NEW_LINE = "\n";
 
     //internal switch
-    public static final boolean SUPPORT_ENTER = false;
-    public static final boolean INTENERL = false;
+    public static final boolean SUPPORT_ENTER = true;
+    public static final boolean INTENERL = true;
 }

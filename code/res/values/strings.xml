@@ -6,5 +6,23 @@
     <string name="fontsize">字体大小</string>
     <string name="font_family_text">Mood</string>
     <string name="fontline">行数</string>
+    
+    
+    <string name="add">"添文字"</string>
+    <string name="previous">上一张</string>
+    <string name="next">下一张</string>
+    <string name="save">保存</string>
+    <string name="preview">预览</string>
+    <string name="batch">批量</string>
+    <string name="recovery">返回</string>
+    <string name="aligin_left">左对齐</string>
+    <string name="aligin_center">居中</string>
+    <string name="aligin_right">左对齐</string>
+    <string name="reset_last">恢复</string>
+    <string name="text_left_algin">左对齐</string>
+    <string name="text_center_algin">居中对齐</string>
+    <string name="text_right_algin">右对齐</string>
+    <string name="read_url">阅读链接</string>
+    <string name="read_url_content">阅读</string>
 
 </resources>

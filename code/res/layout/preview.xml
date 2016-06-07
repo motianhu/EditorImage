@@ -32,7 +32,7 @@
             android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
             android:drawableTop="@drawable/return_pressed"
             android:gravity="center"
-            android:text="上一张" />
+            android:text="@string/previous" />
 
         <TextView
             android:id="@+id/next"
@@ -41,7 +41,7 @@
             android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
             android:drawableTop="@drawable/next"
             android:gravity="center"
-            android:text="下一张" />
+            android:text="@string/next" />
         
         <TextView
             android:id="@+id/read_url"
@@ -50,7 +50,7 @@
             android:layout_marginLeft="@dimen/emotion_element_line_margin_left"
             android:drawableTop="@drawable/next"
             android:gravity="center"
-            android:text="阅读" />
+            android:text="@string/read_url_content" />
     </LinearLayout>
 
 </com.smona.app.editorimage.preview.PreviewLayer>
