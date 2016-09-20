@@ -498,8 +498,8 @@ public class DetailActivity extends Activity implements OnLongClickListener,
     private void clickSave() {
         ArrayList<FontInfo> infos = mEditorLayer.acquisitionInfos();
         if (infos.size() < 1) {
-            showMessage("有文字才可保存!请新添加文字");
-            return;
+            showMessage("注意没有加文字!");
+            //return;
         }
 
         try {
